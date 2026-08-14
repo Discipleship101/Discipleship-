@@ -50,7 +50,6 @@
       }
     }
 
-    /* Language Toggle */
     .lang-toggle {
       position: absolute;
       top: 1rem;
@@ -82,7 +81,6 @@
       font-size: 1rem;
     }
 
-    /* HEADER */
     .header {
       background: linear-gradient(135deg, #1a4a2a 0%, #2d6b3f 50%, #1a4a2a 100%);
       padding: 2.5rem 2rem 2rem;
@@ -134,7 +132,6 @@
       z-index: 1;
     }
 
-    /* LOGO STYLES - Replace with your actual logo */
     .logo-img {
       width: 80px;
       height: 80px;
@@ -149,21 +146,6 @@
       transform: scale(1.05) rotate(3deg);
       border-color: #c9a96e;
       box-shadow: 0 0 40px rgba(201, 169, 110, 0.2);
-    }
-
-    /* Fallback if no image */
-    .logo-icon {
-      width: 80px;
-      height: 80px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      color: #c9a96e;
-      border: 3px solid rgba(201, 169, 110, 0.3);
-      transition: all 0.5s ease;
     }
 
     .header .foundation-name {
@@ -217,7 +199,6 @@
       color: #c9a96e;
     }
 
-    /* Form Body */
     .form-body {
       padding: 2.5rem 2.5rem 2rem;
     }
@@ -392,7 +373,6 @@
       font-size: 1.2rem;
     }
 
-    /* Thank You */
     #thankYou {
       text-align: center;
       padding: 3rem 2rem;
@@ -571,7 +551,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Urdu Styles */
     .lang-urdu label,
     .lang-urdu .section-title,
     .lang-urdu .fee-label,
@@ -635,10 +614,9 @@
         padding: 5px 10px;
       }
 
-      .logo-img, .logo-icon {
+      .logo-img {
         width: 55px;
         height: 55px;
-        font-size: 1.8rem;
       }
     }
   </style>
@@ -653,7 +631,7 @@
       </button>
 
       <div class="logo-container">
-        <!-- REPLACE 'your-logo.png' WITH YOUR ACTUAL LOGO FILE NAME -->
+        <!-- CHANGE 'your-logo.png' TO YOUR ACTUAL LOGO FILE NAME -->
         <img src="your-logo.png" alt="Living Branch Church" class="logo-img" id="churchLogo">
       </div>
 
@@ -661,7 +639,7 @@
       
       <h1 id="headerTitle">✝️ <span class="highlight">Discipleship</span> Classes</h1>
       
-      <div class="subtitle" id="headerSubtitle">Growing Together in Faith</div>
+      <div class="subtitle" id="headerSubtitle">Living Branch Church — Growing Together in Faith</div>
       
       <div class="verse" id="headerVerse">
         <i class="fas fa-quote-left"></i> "Go and make disciples of all nations" — Matthew 28:19
@@ -913,7 +891,7 @@
           footerTagline: '"Making disciples who make disciples"'
         },
         ur: {
-          headerTitle: '✝️ شاگردی کی کلاسیں',
+          headerTitle: '✝️ شاگرد سازی کی کلاسیں',
           headerSubtitle: 'لیونگ برانچ چرچ — ایمان میں ایک ساتھ بڑھتے ہوئے',
           headerVerse: '"جاؤ اور تمام قوموں کو شاگرد بناؤ" — متی 28:19',
           secPersonal: 'ذاتی معلومات',
@@ -951,7 +929,7 @@
           submitText: 'رجسٹریشن جمع کریں',
           thankTitle: 'رجسٹریشن مکمل! 🎉',
           thankYouPrefix: 'شکریہ،',
-          thankYouMessage: 'شاگردی کی کلاسوں کے لیے آپ کی رجسٹریشن کامیابی سے محفوظ ہو گئی ہے۔',
+          thankYouMessage: 'شاگرد سازی کی کلاسوں کے لیے آپ کی رجسٹریشن کامیابی سے محفوظ ہو گئی ہے۔',
           summaryRegFee: '📌 رجسٹریشن فیس:',
           summaryRegFeeNote: '(ایک بار)',
           summaryMonthlyFee: '📌 ماہانہ فیس:',
@@ -971,7 +949,7 @@
 
       const t = translations[isUrdu ? 'ur' : 'en'];
       
-      document.getElementById('headerTitle').innerHTML = isUrdu ? '✝️ شاگردی کی کلاسیں' : '✝️ <span class="highlight">Discipleship</span> Classes';
+      document.getElementById('headerTitle').innerHTML = isUrdu ? '✝️ شاگرد سازی کی کلاسیں' : '✝️ <span class="highlight">Discipleship</span> Classes';
       document.getElementById('headerSubtitle').textContent = t.headerSubtitle;
       document.getElementById('headerVerse').innerHTML = '<i class="fas fa-quote-left"></i> ' + t.headerVerse;
       document.getElementById('secPersonal').textContent = t.secPersonal;
@@ -1046,7 +1024,6 @@
       }
     }
 
-    // Form submission
     const form = document.getElementById('discipleForm');
     const thankYouDiv = document.getElementById('thankYou');
     const loadingDiv = document.getElementById('loading');
