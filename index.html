@@ -134,43 +134,36 @@
       z-index: 1;
     }
 
+    /* LOGO STYLES - Replace with your actual logo */
+    .logo-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(201, 169, 110, 0.3);
+      transition: all 0.5s ease;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .logo-img:hover {
+      transform: scale(1.05) rotate(3deg);
+      border-color: #c9a96e;
+      box-shadow: 0 0 40px rgba(201, 169, 110, 0.2);
+    }
+
+    /* Fallback if no image */
     .logo-icon {
-      width: 70px;
-      height: 70px;
+      width: 80px;
+      height: 80px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       color: #c9a96e;
       border: 3px solid rgba(201, 169, 110, 0.3);
       transition: all 0.5s ease;
-      animation: pulseGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 20px rgba(201, 169, 110, 0.1); }
-      50% { box-shadow: 0 0 40px rgba(201, 169, 110, 0.2); }
-    }
-
-    .logo-icon:hover {
-      transform: rotate(10deg) scale(1.05);
-    }
-
-    /* LOGO PLACEHOLDER - Replace with your actual logo */
-    .logo-img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid rgba(201, 169, 110, 0.3);
-      transition: all 0.5s ease;
-    }
-
-    .logo-img:hover {
-      transform: scale(1.05);
-      border-color: #c9a96e;
     }
 
     .header .foundation-name {
@@ -207,21 +200,6 @@
       text-transform: uppercase;
       position: relative;
       z-index: 1;
-    }
-
-    .header .class-date {
-      display: inline-block;
-      background: rgba(201, 169, 110, 0.15);
-      border: 1px solid rgba(201, 169, 110, 0.3);
-      color: #c9a96e;
-      padding: 4px 20px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-top: 0.5rem;
-      position: relative;
-      z-index: 1;
-      letter-spacing: 1px;
     }
 
     .header .verse {
@@ -675,12 +653,8 @@
       </button>
 
       <div class="logo-container">
-        <!-- OPTION 1: Image Logo (Recommended) -->
-        <!-- Replace 'your-logo.png' with your actual logo file -->
+        <!-- REPLACE 'your-logo.png' WITH YOUR ACTUAL LOGO FILE NAME -->
         <img src="your-logo.png" alt="Living Branch Church" class="logo-img" id="churchLogo">
-        
-        <!-- OPTION 2: Icon Logo (Fallback) -->
-        <!-- <div class="logo-icon"><i class="fas fa-tree"></i></div> -->
       </div>
 
       <div class="foundation-name">Living Branch Church Foundation</div>
@@ -688,10 +662,6 @@
       <h1 id="headerTitle">✝️ <span class="highlight">Discipleship</span> Classes</h1>
       
       <div class="subtitle" id="headerSubtitle">Growing Together in Faith</div>
-      
-      <div class="class-date">
-        <i class="fas fa-calendar-alt"></i> <span id="classDate">Starting May 23rd</span>
-      </div>
       
       <div class="verse" id="headerVerse">
         <i class="fas fa-quote-left"></i> "Go and make disciples of all nations" — Matthew 28:19
@@ -890,7 +860,6 @@
         en: {
           headerTitle: '✝️ Discipleship Classes',
           headerSubtitle: 'Living Branch Church — Growing Together in Faith',
-          classDate: 'Starting May 23rd',
           headerVerse: '"Go and make disciples of all nations" — Matthew 28:19',
           secPersonal: 'Personal Information',
           lblFullName: '1. Full Name',
@@ -946,7 +915,6 @@
         ur: {
           headerTitle: '✝️ شاگردی کی کلاسیں',
           headerSubtitle: 'لیونگ برانچ چرچ — ایمان میں ایک ساتھ بڑھتے ہوئے',
-          classDate: '23 مئی سے شروع',
           headerVerse: '"جاؤ اور تمام قوموں کو شاگرد بناؤ" — متی 28:19',
           secPersonal: 'ذاتی معلومات',
           lblFullName: '1. پورا نام',
@@ -1005,7 +973,6 @@
       
       document.getElementById('headerTitle').innerHTML = isUrdu ? '✝️ شاگردی کی کلاسیں' : '✝️ <span class="highlight">Discipleship</span> Classes';
       document.getElementById('headerSubtitle').textContent = t.headerSubtitle;
-      document.getElementById('classDate').textContent = t.classDate;
       document.getElementById('headerVerse').innerHTML = '<i class="fas fa-quote-left"></i> ' + t.headerVerse;
       document.getElementById('secPersonal').textContent = t.secPersonal;
       document.getElementById('lblFullName').innerHTML = t.lblFullName + ' <span class="required">*</span>';
@@ -1158,7 +1125,7 @@
         }
 
         const cleanPhone = formData.whatsappNumber.replace(/\D/g, '');
-        const message = `🙏 Thank you ${formData.fullName}! Your registration for Discipleship Classes at Living Branch Church has been received. \n\n📌 Registration Fee: PKR 1,000 (one-time)\n📌 Monthly Fee: PKR ${formData.monthlyFee}/month\n📌 Payment Method: ${formData.paymentMethod}\n${formData.easypaisaNumber ? '📌 Easypaisa/JazzCash Number: ' + formData.easypaisaNumber + '\n' : ''}\n\n📅 Classes start May 23rd. We'll contact you soon with details. God bless you! 🌟`;
+        const message = `🙏 Thank you ${formData.fullName}! Your registration for Discipleship Classes at Living Branch Church has been received. \n\n📌 Registration Fee: PKR 1,000 (one-time)\n📌 Monthly Fee: PKR ${formData.monthlyFee}/month\n📌 Payment Method: ${formData.paymentMethod}\n${formData.easypaisaNumber ? '📌 Easypaisa/JazzCash Number: ' + formData.easypaisaNumber + '\n' : ''}\n\nWe'll contact you soon with details. God bless you! 🌟`;
         const encodedMsg = encodeURIComponent(message);
         whatsappLink.href = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
 
