@@ -139,8 +139,8 @@
     }
 
     .header .foundation-name {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.75rem;
       letter-spacing: 4px;
       text-transform: uppercase;
       font-weight: 300;
@@ -165,8 +165,8 @@
     }
 
     .header .subtitle {
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.8rem;
       font-weight: 300;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -384,30 +384,6 @@
       margin-bottom: 0.5rem;
     }
 
-    .whatsapp-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: #25D366;
-      color: #ffffff;
-      padding: 14px 32px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      margin-top: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .whatsapp-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
-    }
-
-    .whatsapp-btn i {
-      font-size: 1.4rem;
-    }
-
     .fee-summary {
       background: #f8fbf8;
       padding: 1rem;
@@ -431,36 +407,11 @@
       font-weight: 600;
     }
 
-    .bank-details {
-      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-      padding: 1.2rem;
-      border-radius: 12px;
-      margin: 1rem 0;
-      text-align: left;
-      border: 2px solid #a5d6a7;
-      animation: fadeIn 0.5s ease;
-    }
-
-    .bank-details p {
-      margin: 0.3rem 0;
-      color: #1b5e20;
-      font-size: 0.95rem;
-    }
-
-    .bank-details strong {
-      color: #1a4a2a;
-    }
-
-    .bank-details span {
-      color: #1b5e20;
-      font-weight: 600;
-    }
-
     .footer {
       background: #f5f0eb;
       padding: 1.5rem 2rem;
       text-align: center;
-      border-top: 1px solid #e8ddd0;
+      border-top: 4px solid #c9a96e;
       font-size: 0.85rem;
       color: #8a7a72;
     }
@@ -523,30 +474,6 @@
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
-    }
-
-    /* Conditional Field for Easypaisa/JazzCash */
-    .conditional-field {
-      display: none;
-      margin-top: 0.8rem;
-      padding: 1rem;
-      background: #fff;
-      border-radius: 10px;
-      border: 2px dashed #c9a96e;
-      animation: slideDown 0.3s ease;
-    }
-
-    .conditional-field.visible {
-      display: block;
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .conditional-field label {
-      margin-top: 0;
     }
 
     .payment-number-display {
@@ -658,15 +585,12 @@
       </button>
 
       <div class="logo-container">
-        <!-- Replace 'logo.jpeg' with your actual logo filename -->
         <img src="logo.jpeg" alt="Living Branch Church" class="logo-img" id="churchLogo">
       </div>
 
-      <div class="foundation-name">Living Branch Church Foundation</div>
+      <div class="foundation-name" id="foundationName">Living Branch Church Foundation</div>
       
       <h1 id="headerTitle">✝️ <span class="highlight">Membership to</span> Discipleship</h1>
-      
-      <div class="subtitle" id="headerSubtitle">Living Branch Church Foundation</div>
       
       <div class="verse" id="headerVerse">
         <i class="fas fa-quote-left"></i> "Go and make disciples of all nations" — Matthew 28:19
@@ -717,7 +641,7 @@
         <label id="lblChurchName">6. Your Church Name <span class="required">*</span></label>
         <input type="text" id="churchName" required placeholder="Name of your church">
 
-        <label id="lblRole">7. Your Role in the Church</label>
+        <label id="lblRole">7. Your Responsibilities in the Church</label>
         <input type="text" id="roleInChurch" placeholder="e.g., Member, Deacon, Worship Leader">
 
         <label id="lblChurchAddress">8. Your Church Address <span class="required">*</span></label>
@@ -757,12 +681,11 @@
 
           <label class="fee-label" style="margin-top: 1rem;" id="lblPaymentMethod">14. Payment Method <span class="required">*</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="paymentMethod" value="Easypaisa" required onclick="togglePaymentField()"> <span id="optEasypaisa">Easypaisa</span></label>
-            <label><input type="radio" name="paymentMethod" value="JazzCash" onclick="togglePaymentField()"> <span id="optJazzCash">JazzCash</span></label>
+            <label><input type="radio" name="paymentMethod" value="Easypaisa" required> <span id="optEasypaisa">Easypaisa</span></label>
+            <label><input type="radio" name="paymentMethod" value="JazzCash"> <span id="optJazzCash">JazzCash</span></label>
           </div>
 
-          <!-- Payment Account Display -->
-          <div class="payment-number-display" id="paymentNumberDisplay">
+          <div class="payment-number-display">
             <strong id="paymentLabel">Easypaisa / JazzCash Number:</strong> <span>0301-5661600</span>
           </div>
 
@@ -779,19 +702,17 @@
         <label id="lblWhyDisciple">15. Why do you want to be a disciple?</label>
         <textarea id="whyDisciple" rows="2" placeholder="Share your heart behind joining this program..."></textarea>
 
-        <label id="lblGifts">16. Spiritual gifts or areas of interest</label>
+        <label id="lblGifts">16. Your spiritual gifts</label>
         <input type="text" id="spiritualGifts" placeholder="e.g., teaching, worship, outreach, prayer, leadership">
 
         <label id="lblPrayer">17. Prayer requests or special needs</label>
         <textarea id="prayerRequests" rows="2" placeholder="Any prayer requests or special needs..."></textarea>
 
-        <!-- Loading Spinner -->
         <div class="loading" id="loading">
           <div class="spinner"></div>
           <p style="margin-top: 0.5rem; color: #8a7a72;" id="loadingText">Submitting your registration...</p>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" class="submit-btn" id="submitBtn">
           <i class="fas fa-paper-plane"></i> <span id="submitText">Submit Registration</span>
         </button>
@@ -813,14 +734,8 @@
           <p><strong>📌 Send Payment To:</strong> <span>0301-5661600</span></p>
         </div>
 
-        <p style="font-size: 0.95rem; color: #1a4a2a;" id="whatsappInstruction">
-          <i class="fas fa-phone"></i> You'll receive a WhatsApp confirmation shortly:
-        </p>
-        <a id="whatsappLink" href="#" target="_blank" class="whatsapp-btn">
-          <i class="fab fa-whatsapp"></i> <span id="whatsappBtnText">Receive Thank-You on WhatsApp</span>
-        </a>
-        <p style="margin-top: 1rem; font-size: 0.8rem; color: #aaa;" id="whatsappNote">
-          <i class="fas fa-info-circle"></i> If the link doesn't open, WhatsApp us directly.
+        <p style="font-size: 0.95rem; color: #1a4a2a; margin-top: 1rem;">
+          <i class="fas fa-phone"></i> You will receive a confirmation on WhatsApp shortly.
         </p>
       </div>
     </div>
@@ -854,10 +769,6 @@
       updateLanguage();
     }
 
-    function togglePaymentField() {
-      // Just a placeholder — the field is always visible now with the fixed number
-    }
-
     function updateLanguage() {
       const isUrdu = currentLang === 'ur';
       
@@ -876,7 +787,7 @@
           lblEducation: '5. Education',
           secChurch: 'Church Information',
           lblChurchName: '6. Your Church Name',
-          lblRole: '7. Your Role in the Church',
+          lblRole: '7. Your Responsibilities in the Church',
           lblChurchAddress: '8. Your Church Address',
           lblPastor: "9. Your Pastor's Name",
           secContact: 'Contact Information',
@@ -895,7 +806,7 @@
           paymentDetailsNote: 'Please send the fee to the above number and share the screenshot with us.',
           secSpiritual: 'Your Spiritual Journey',
           lblWhyDisciple: '15. Why do you want to be a disciple?',
-          lblGifts: '16. Spiritual gifts or areas of interest',
+          lblGifts: '16. Your spiritual gifts',
           lblPrayer: '17. Prayer requests or special needs',
           loadingText: 'Submitting your registration...',
           submitText: 'Submit Registration',
@@ -906,14 +817,11 @@
           summaryRegFeeNote: '(one-time)',
           summaryMonthlyFee: '📌 Monthly Fee:',
           summaryPaymentMethod: '📌 Payment Method:',
-          whatsappInstruction: 'You\'ll receive a WhatsApp confirmation shortly:',
-          whatsappBtnText: 'Receive Thank-You on WhatsApp',
-          whatsappNote: 'If the link doesn\'t open, WhatsApp us directly.',
           footerRights: 'All Rights Reserved',
           footerTagline: '"Making disciples who make disciples"'
         },
         ur: {
-          headerTitle: '✝️ رکنیت سے شاگردی تک',
+          headerTitle: '✝️ رکنیت سے شاگردیت تک',
           headerSubtitle: 'لیونگ برانچ چرچ فاؤنڈیشن',
           headerVerse: '"جاؤ اور تمام قوموں کو شاگرد بناؤ" — متی 28:19',
           secPersonal: 'ذاتی معلومات',
@@ -926,9 +834,9 @@
           lblEducation: '5. تعلیم',
           secChurch: 'چرچ کی معلومات',
           lblChurchName: '6. آپ کے چرچ کا نام',
-          lblRole: '7. چرچ میں آپ کا کردار',
+          lblRole: '7. چرچ میں آپ کی ذمہ داریاں',
           lblChurchAddress: '8. آپ کے چرچ کا پتہ',
-          lblPastor: '9. آپ کے پادری کا نام',
+          lblPastor: '9. آپ کے پادری صاحب کا نام',
           secContact: 'رابطے کی معلومات',
           lblMobile: '10. موبائل نمبر',
           lblWhatsApp: '11. واٹس ایپ نمبر',
@@ -945,8 +853,8 @@
           paymentDetailsNote: 'براہ کرم فیس مذکورہ نمبر پر بھیجیں اور اسکرین شاٹ ہمیں شیئر کریں۔',
           secSpiritual: 'آپ کا روحانی سفر',
           lblWhyDisciple: '15. آپ شاگرد کیوں بننا چاہتے ہیں؟',
-          lblGifts: '16. روحانی نعمت یا دلچسپی کے شعبے',
-          lblPrayer: '17. دعائیہ درخواستیں یا خصوصی ضروریات',
+          lblGifts: '16. آپ کی روحانی نعمت',
+          lblPrayer: '17. دعائیہ درخواستیں اور خصوصی ضروریات',
           loadingText: 'آپ کی رجسٹریشن جمع کرائی جا رہی ہے...',
           submitText: 'رجسٹریشن جمع کریں',
           thankTitle: 'رجسٹریشن مکمل! 🎉',
@@ -956,9 +864,6 @@
           summaryRegFeeNote: '(ایک بار)',
           summaryMonthlyFee: '📌 ماہانہ فیس:',
           summaryPaymentMethod: '📌 ادائیگی کا طریقہ:',
-          whatsappInstruction: 'آپ کو جلد ہی واٹس ایپ پر تصدیق موصول ہوگی:',
-          whatsappBtnText: 'واٹس ایپ پر شکریہ پیغام حاصل کریں',
-          whatsappNote: 'اگر لنک نہ کھلے تو براہ راست ہمیں واٹس ایپ کریں۔',
           footerRights: 'جملہ حقوق محفوظ ہیں',
           footerTagline: '"شاگرد بنانا جو شاگرد بنائیں"'
         }
@@ -966,8 +871,8 @@
 
       const t = translations[isUrdu ? 'ur' : 'en'];
       
-      document.getElementById('headerTitle').innerHTML = isUrdu ? '✝️ رکنیت سے شاگردی تک' : '✝️ <span class="highlight">Membership to</span> Discipleship';
-      document.getElementById('headerSubtitle').textContent = t.headerSubtitle;
+      document.getElementById('headerTitle').innerHTML = isUrdu ? '✝️ رکنیت سے شاگردیت تک' : '✝️ <span class="highlight">Membership to</span> Discipleship';
+      document.getElementById('foundationName').textContent = t.headerSubtitle;
       document.getElementById('headerVerse').innerHTML = '<i class="fas fa-quote-left"></i> ' + t.headerVerse;
       document.getElementById('secPersonal').textContent = t.secPersonal;
       document.getElementById('lblFullName').innerHTML = t.lblFullName + ' <span class="required">*</span>';
@@ -1009,9 +914,6 @@
       document.getElementById('summaryRegFeeNote').textContent = t.summaryRegFeeNote;
       document.getElementById('summaryMonthlyFee').innerHTML = t.summaryMonthlyFee + ' <span id="displayMonthlyFee"></span>';
       document.getElementById('summaryPaymentMethod').innerHTML = t.summaryPaymentMethod + ' <span id="displayPaymentMethod"></span>';
-      document.getElementById('whatsappInstruction').innerHTML = '<i class="fas fa-phone"></i> ' + t.whatsappInstruction;
-      document.getElementById('whatsappBtnText').textContent = t.whatsappBtnText;
-      document.getElementById('whatsappNote').innerHTML = '<i class="fas fa-info-circle"></i> ' + t.whatsappNote;
       document.getElementById('footerRights').textContent = t.footerRights;
       document.getElementById('footerTagline').textContent = t.footerTagline;
     }
@@ -1022,7 +924,6 @@
     const loadingDiv = document.getElementById('loading');
     const submitBtn = document.getElementById('submitBtn');
     const thankYouName = document.getElementById('thankYouName');
-    const whatsappLink = document.getElementById('whatsappLink');
     const displayMonthlyFee = document.getElementById('displayMonthlyFee');
     const displayPaymentMethod = document.getElementById('displayPaymentMethod');
 
@@ -1085,11 +986,6 @@
         thankYouName.textContent = formData.fullName;
         displayMonthlyFee.textContent = `PKR ${formData.monthlyFee}/month`;
         displayPaymentMethod.textContent = formData.paymentMethod;
-
-        const cleanPhone = formData.whatsappNumber.replace(/\D/g, '');
-        const message = `🙏 Thank you ${formData.fullName}! Your registration has been received for the "Membership to Discipleship" program. \n\n📌 Registration Fee: PKR 1,000 (one-time)\n📌 Monthly Fee: PKR ${formData.monthlyFee}/month\n📌 Payment Method: ${formData.paymentMethod}\n📌 Send Payment To: 0301-5661600\n\nWe'll contact you soon with details. God bless you! 🌟`;
-        const encodedMsg = encodeURIComponent(message);
-        whatsappLink.href = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
 
         form.classList.add('hidden');
         thankYouDiv.classList.add('active');
