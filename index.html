@@ -164,16 +164,6 @@
       color: #c9a96e;
     }
 
-    .header .subtitle {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.8rem;
-      font-weight: 300;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      position: relative;
-      z-index: 1;
-    }
-
     .header .verse {
       color: rgba(255, 255, 255, 0.6);
       font-style: italic;
@@ -240,6 +230,17 @@
       background: #ffffff;
       box-shadow: 0 0 0 4px rgba(201, 169, 110, 0.12);
       transform: translateY(-1px);
+    }
+
+    input[type="file"] {
+      padding: 12px;
+      border: 2px dashed #c9a96e;
+      background: #fafcfa;
+      cursor: pointer;
+    }
+
+    input[type="file"]:hover {
+      background: #f0f5f0;
     }
 
     .fee-section {
@@ -496,6 +497,16 @@
       font-size: 1rem;
     }
 
+    .upload-note {
+      font-size: 0.8rem;
+      color: #8a7a72;
+      margin-top: 0.3rem;
+    }
+
+    .upload-note i {
+      color: #c9a96e;
+    }
+
     /* Urdu Styles */
     .lang-urdu label,
     .lang-urdu .section-title,
@@ -600,7 +611,7 @@
     <!-- FORM BODY -->
     <div class="form-body" id="formBody">
       
-      <form id="discipleForm">
+      <form id="discipleForm" enctype="multipart/form-data">
         
         <!-- Personal Information -->
         <div class="section-title">
@@ -708,11 +719,33 @@
         <label id="lblPrayer">17. Prayer requests or special needs</label>
         <textarea id="prayerRequests" rows="2" placeholder="Any prayer requests or special needs..."></textarea>
 
+        <!-- ============================================ -->
+        <!-- 🔥 NEW: DOCUMENT UPLOAD SECTION -->
+        <!-- ============================================ -->
+        <div class="section-title" style="margin-top: 1.5rem;">
+          <i class="fas fa-id-card"></i> <span id="secUploads">Document Upload</span>
+        </div>
+
+        <label id="lblCnicFront">CNIC / ID Card (Front) <span class="required">*</span></label>
+        <input type="file" id="cnicFront" accept="image/*" required>
+
+        <label id="lblCnicBack">CNIC / ID Card (Back) <span class="required">*</span></label>
+        <input type="file" id="cnicBack" accept="image/*" required>
+
+        <label id="lblPhoto">Recent Photograph <span class="required">*</span></label>
+        <input type="file" id="photo" accept="image/*" required>
+
+        <p class="upload-note">
+          <i class="fas fa-info-circle"></i> <span id="uploadNote">Please upload clear images (JPG, PNG). Max size: 5MB each.</span>
+        </p>
+
+        <!-- Loading Spinner -->
         <div class="loading" id="loading">
           <div class="spinner"></div>
           <p style="margin-top: 0.5rem; color: #8a7a72;" id="loadingText">Submitting your registration...</p>
         </div>
 
+        <!-- Submit Button -->
         <button type="submit" class="submit-btn" id="submitBtn">
           <i class="fas fa-paper-plane"></i> <span id="submitText">Submit Registration</span>
         </button>
@@ -808,6 +841,11 @@
           lblWhyDisciple: '15. Why do you want to be a disciple?',
           lblGifts: '16. Your spiritual gifts',
           lblPrayer: '17. Prayer requests or special needs',
+          secUploads: 'Document Upload',
+          lblCnicFront: 'CNIC / ID Card (Front)',
+          lblCnicBack: 'CNIC / ID Card (Back)',
+          lblPhoto: 'Recent Photograph',
+          uploadNote: 'Please upload clear images (JPG, PNG). Max size: 5MB each.',
           loadingText: 'Submitting your registration...',
           submitText: 'Submit Registration',
           thankTitle: 'Registration Complete! 🎉',
@@ -855,6 +893,11 @@
           lblWhyDisciple: '15. آپ شاگرد کیوں بننا چاہتے ہیں؟',
           lblGifts: '16. آپ کی روحانی نعمت',
           lblPrayer: '17. دعائیہ درخواستیں اور خصوصی ضروریات',
+          secUploads: 'دستاویزات اپ لوڈ کریں',
+          lblCnicFront: 'شناختی کارڈ (سامنے)',
+          lblCnicBack: 'شناختی کارڈ (پیچھے)',
+          lblPhoto: 'حالیہ تصویر',
+          uploadNote: 'براہ کرم واضح تصاویر اپ لوڈ کریں (JPG, PNG)۔ زیادہ سے زیادہ سائز: 5MB',
           loadingText: 'آپ کی رجسٹریشن جمع کرائی جا رہی ہے...',
           submitText: 'رجسٹریشن جمع کریں',
           thankTitle: 'رجسٹریشن مکمل! 🎉',
@@ -905,6 +948,11 @@
       document.getElementById('lblWhyDisciple').textContent = t.lblWhyDisciple;
       document.getElementById('lblGifts').textContent = t.lblGifts;
       document.getElementById('lblPrayer').textContent = t.lblPrayer;
+      document.getElementById('secUploads').textContent = t.secUploads;
+      document.getElementById('lblCnicFront').innerHTML = t.lblCnicFront + ' <span class="required">*</span>';
+      document.getElementById('lblCnicBack').innerHTML = t.lblCnicBack + ' <span class="required">*</span>';
+      document.getElementById('lblPhoto').innerHTML = t.lblPhoto + ' <span class="required">*</span>';
+      document.getElementById('uploadNote').textContent = t.uploadNote;
       document.getElementById('loadingText').textContent = t.loadingText;
       document.getElementById('submitText').textContent = t.submitText;
       document.getElementById('thankTitle').textContent = t.thankTitle;
@@ -918,7 +966,23 @@
       document.getElementById('footerTagline').textContent = t.footerTagline;
     }
 
-    // Form Submission
+    // ============================================
+    // FILE UPLOAD HELPER FUNCTIONS
+    // ============================================
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+    // ============================================
+    // FORM SUBMISSION
+    // ============================================
+
     const form = document.getElementById('discipleForm');
     const thankYouDiv = document.getElementById('thankYou');
     const loadingDiv = document.getElementById('loading');
@@ -928,15 +992,17 @@
     const displayPaymentMethod = document.getElementById('displayPaymentMethod');
 
     // REPLACE WITH YOUR APPS SCRIPT WEB APP URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Rz0Kb98QkeE4mAZ2ylOU8ybB3Q8sCsUm23ZH6nJV8Ni1zQSR83F4ERLiaJjcPDfGKw/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwsKk2ytHx7GbXS0LGxwJ01hvOO5Yh_vk8qgBSvTHTX7Efp3QRoHid5P2UZI1iQ4879bg/exec';
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
+      // Show loading
       loadingDiv.classList.add('active');
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (currentLang === 'ur' ? 'جمع کر رہے ہیں...' : 'Submitting...');
 
+      // Get form data
       const monthlyFeeRadios = document.querySelectorAll('input[name="monthlyFee"]');
       let monthlyFee = '';
       for (const radio of monthlyFeeRadios) {
@@ -949,36 +1015,79 @@
         if (radio.checked) paymentMethod = radio.value;
       }
 
-      const formData = {
-        fullName: document.getElementById('fullName').value.trim(),
-        fathersName: document.getElementById('fathersName').value.trim(),
-        dateOfBirth: document.getElementById('dateOfBirth').value,
-        address: document.getElementById('address').value.trim(),
-        city: document.getElementById('city').value.trim(),
-        country: document.getElementById('country').value.trim(),
-        education: document.getElementById('education').value.trim(),
-        churchName: document.getElementById('churchName').value.trim(),
-        roleInChurch: document.getElementById('roleInChurch').value.trim(),
-        churchAddress: document.getElementById('churchAddress').value.trim(),
-        pastorsName: document.getElementById('pastorsName').value.trim(),
-        mobileNumber: document.getElementById('mobileNumber').value.trim(),
-        whatsappNumber: document.getElementById('whatsappNumber').value.trim(),
-        registrationFee: '1000',
-        monthlyFee: monthlyFee,
-        paymentMethod: paymentMethod,
-        whyDisciple: document.getElementById('whyDisciple').value.trim(),
-        spiritualGifts: document.getElementById('spiritualGifts').value.trim(),
-        prayerRequests: document.getElementById('prayerRequests').value.trim()
-      };
+      // Get files
+      const cnicFrontFile = document.getElementById('cnicFront').files[0];
+      const cnicBackFile = document.getElementById('cnicBack').files[0];
+      const photoFile = document.getElementById('photo').files[0];
 
       try {
-        await fetch(SCRIPT_URL, {
+        // Convert files to base64
+        let cnicFrontData = null;
+        let cnicBackData = null;
+        let photoData = null;
+
+        if (cnicFrontFile) {
+          const result = await fileToBase64(cnicFrontFile);
+          cnicFrontData = {
+            data: result.split(',')[1],
+            type: cnicFrontFile.type,
+            name: cnicFrontFile.name
+          };
+        }
+
+        if (cnicBackFile) {
+          const result = await fileToBase64(cnicBackFile);
+          cnicBackData = {
+            data: result.split(',')[1],
+            type: cnicBackFile.type,
+            name: cnicBackFile.name
+          };
+        }
+
+        if (photoFile) {
+          const result = await fileToBase64(photoFile);
+          photoData = {
+            data: result.split(',')[1],
+            type: photoFile.type,
+            name: photoFile.name
+          };
+        }
+
+        // Build form data
+        const formData = {
+          fullName: document.getElementById('fullName').value.trim(),
+          fathersName: document.getElementById('fathersName').value.trim(),
+          dateOfBirth: document.getElementById('dateOfBirth').value,
+          address: document.getElementById('address').value.trim(),
+          city: document.getElementById('city').value.trim(),
+          country: document.getElementById('country').value.trim(),
+          education: document.getElementById('education').value.trim(),
+          churchName: document.getElementById('churchName').value.trim(),
+          roleInChurch: document.getElementById('roleInChurch').value.trim(),
+          churchAddress: document.getElementById('churchAddress').value.trim(),
+          pastorsName: document.getElementById('pastorsName').value.trim(),
+          mobileNumber: document.getElementById('mobileNumber').value.trim(),
+          whatsappNumber: document.getElementById('whatsappNumber').value.trim(),
+          registrationFee: '1000',
+          monthlyFee: monthlyFee,
+          paymentMethod: paymentMethod,
+          whyDisciple: document.getElementById('whyDisciple').value.trim(),
+          spiritualGifts: document.getElementById('spiritualGifts').value.trim(),
+          prayerRequests: document.getElementById('prayerRequests').value.trim(),
+          cnicFront: cnicFrontData,
+          cnicBack: cnicBackData,
+          photo: photoData
+        };
+
+        // Send to Apps Script
+        const response = await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
         });
 
+        // Show thank you
         loadingDiv.classList.remove('active');
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ' + (currentLang === 'ur' ? 'رجسٹریشن جمع کریں' : 'Submit Registration');
