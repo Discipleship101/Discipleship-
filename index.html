@@ -1082,7 +1082,7 @@
         // Send to Apps Script
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
-          mode: 'no-cors',
+          mode: 'cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
         });
