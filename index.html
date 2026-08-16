@@ -975,7 +975,7 @@
     }
 
     // ============================================
-    // FORM SUBMISSION (FULLY FIXED)
+    // FORM SUBMISSION - FIXED WITH NEW URL
     // ============================================
 
     const form = document.getElementById('discipleForm');
@@ -986,8 +986,8 @@
     const displayMonthlyFee = document.getElementById('displayMonthlyFee');
     const displayPaymentMethod = document.getElementById('displayPaymentMethod');
 
-    // ✅ YOUR APPS SCRIPT WEB APP URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJkAgiQYT8SaEvpnbfuPiSfK3YTNmrHQ6BirFjkevgrfNdo8rPYCaobaTWd_IuhYBL0Q/exec';
+    // ✅ YOUR NEW APPS SCRIPT URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyU-5fSYUUt4qdIPqgOzcye6ai9SwIycXQkNpjogI9V2-ijekM82rJ1XSXq6NnpDmSzDA/exec';
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -1076,7 +1076,7 @@
 
         console.log('📤 Sending data to Apps Script...');
 
-        // ✅ FIXED: Send to Apps Script with proper CORS
+        // Send to Apps Script
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'cors',
