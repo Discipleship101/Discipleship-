@@ -975,7 +975,7 @@
     }
 
     // ============================================
-    // FORM SUBMISSION
+    // FORM SUBMISSION (FULLY FIXED)
     // ============================================
 
     const form = document.getElementById('discipleForm');
@@ -986,7 +986,7 @@
     const displayMonthlyFee = document.getElementById('displayMonthlyFee');
     const displayPaymentMethod = document.getElementById('displayPaymentMethod');
 
-    // ⚠️ REPLACE WITH YOUR APPS SCRIPT WEB APP URL
+    // ✅ YOUR APPS SCRIPT WEB APP URL
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJkAgiQYT8SaEvpnbfuPiSfK3YTNmrHQ6BirFjkevgrfNdo8rPYCaobaTWd_IuhYBL0Q/exec';
 
     form.addEventListener('submit', async function(e) {
@@ -997,25 +997,25 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (currentLang === 'ur' ? 'جمع کر رہے ہیں...' : 'Submitting...');
 
-      // Get form data
-      const monthlyFeeRadios = document.querySelectorAll('input[name="monthlyFee"]');
-      let monthlyFee = '';
-      for (const radio of monthlyFeeRadios) {
-        if (radio.checked) monthlyFee = radio.value;
-      }
-
-      const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
-      let paymentMethod = '';
-      for (const radio of paymentRadios) {
-        if (radio.checked) paymentMethod = radio.value;
-      }
-
-      // Get files
-      const cnicFrontFile = document.getElementById('cnicFront').files[0];
-      const cnicBackFile = document.getElementById('cnicBack').files[0];
-      const photoFile = document.getElementById('photo').files[0];
-
       try {
+        // Get form data
+        const monthlyFeeRadios = document.querySelectorAll('input[name="monthlyFee"]');
+        let monthlyFee = '';
+        for (const radio of monthlyFeeRadios) {
+          if (radio.checked) monthlyFee = radio.value;
+        }
+
+        const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+        let paymentMethod = '';
+        for (const radio of paymentRadios) {
+          if (radio.checked) paymentMethod = radio.value;
+        }
+
+        // Get files
+        const cnicFrontFile = document.getElementById('cnicFront').files[0];
+        const cnicBackFile = document.getElementById('cnicBack').files[0];
+        const photoFile = document.getElementById('photo').files[0];
+
         // Convert files to base64
         let cnicFrontData = null;
         let cnicBackData = null;
@@ -1074,19 +1074,28 @@
           photo: photoData
         };
 
-        // Send to Apps Script
+        console.log('📤 Sending data to Apps Script...');
+
+        // ✅ FIXED: Send to Apps Script with proper CORS
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify(formData)
         });
 
-        // Check response
+        console.log('📨 Response status:', response.status);
+
+        // Check if response is OK
         if (!response.ok) {
-          throw new Error('Server error: ' + response.status);
+          const errorText = await response.text();
+          throw new Error('Server error: ' + response.status + ' - ' + errorText);
         }
 
         const result = await response.json();
+        console.log('📨 Response data:', result);
 
         if (result.status === 'error') {
           throw new Error(result.message);
@@ -1105,11 +1114,17 @@
         thankYouDiv.classList.add('active');
 
       } catch (error) {
+        console.error('❌ Error:', error);
         loadingDiv.classList.remove('active');
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ' + (currentLang === 'ur' ? 'رجسٹریشن جمع کریں' : 'Submit Registration');
-        alert((currentLang === 'ur' ? 'کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں یا چرچ آفس سے رابطہ کریں۔\n\n' : 'Something went wrong. Please try again or contact the church office.\n\n') + error.message);
-        console.error('Error:', error);
+        
+        let errorMessage = error.message;
+        if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Cannot connect to server. Please check your internet connection and try again.';
+        }
+        
+        alert((currentLang === 'ur' ? 'کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں یا چرچ آفس سے رابطہ کریں۔\n\n' : 'Something went wrong. Please try again or contact the church office.\n\n') + errorMessage);
       }
     });
   </script>
