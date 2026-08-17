@@ -622,7 +622,8 @@
 
       <div class="foundation-name" id="foundationName">Living Branch Church Foundation</div>
       
-      <h1 id="headerTitle">✝️ <span class="highlight">From Membership to</span> Discipleship</h1>
+      <!-- Removed the purple cross icon (✝️) from the heading -->
+      <h1 id="headerTitle"><span class="highlight">From Membership to</span> Discipleship</h1>
       
       <div class="verse" id="headerVerse">
         <i class="fas fa-quote-left"></i> "Go and make disciples of all nations" — Matthew 28:19
@@ -692,25 +693,28 @@
         <label id="lblPastor">12. Your Pastor's Name <span class="required">*</span></label>
         <input type="text" id="pastorsName" required placeholder="Name of your pastor">
 
+        <label id="lblPastorContact">13. Your Pastor's Contact Number <span class="required">*</span></label>
+        <input type="tel" id="pastorContact" required placeholder="e.g., 923001234567">
+
         <!-- Fees Section -->
         <div class="fee-section">
           <div class="section-title" style="border-bottom: none; margin-bottom: 0.5rem;">
             <i class="fas fa-coins"></i> <span id="secFees">Registration & Fees</span>
           </div>
 
-          <label class="fee-label" id="lblRegFee">13. Registration Fee (one time) <span class="required">*</span></label>
+          <label class="fee-label" id="lblRegFee">14. Registration Fee (one time) <span class="required">*</span></label>
           <p style="color: #1a4a2a; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">
             PKR 1,000 <span style="font-weight: 400; color: #8a7a72; font-size: 0.9rem;" id="regFeeNote">(one-time admission fee)</span>
           </p>
           <input type="hidden" id="registrationFee" value="1000">
 
-          <label class="fee-label" id="lblMonthlyFee">14. Monthly Fee Selection <span class="required">*</span></label>
+          <label class="fee-label" id="lblMonthlyFee">15. Monthly Fee Selection <span class="required">*</span></label>
           <div class="radio-group">
             <label><input type="radio" name="monthlyFee" value="500" required> <span id="opt500">PKR 500/month</span></label>
             <label><input type="radio" name="monthlyFee" value="1000"> <span id="opt1000">PKR 1,000/month</span></label>
           </div>
 
-          <label class="fee-label" style="margin-top: 1rem;" id="lblPaymentMethod">15. Payment Method <span class="required">*</span></label>
+          <label class="fee-label" style="margin-top: 1rem;" id="lblPaymentMethod">16. Payment Method <span class="required">*</span></label>
           <div class="radio-group">
             <label><input type="radio" name="paymentMethod" value="Easypaisa" required> <span id="optEasypaisa">Easypaisa</span></label>
             <label><input type="radio" name="paymentMethod" value="JazzCash"> <span id="optJazzCash">JazzCash</span></label>
@@ -730,13 +734,13 @@
           <i class="fas fa-heart"></i> <span id="secSpiritual">Your Spiritual Journey</span>
         </div>
 
-        <label id="lblWhyDisciple">16. Why do you want to become a disciple?</label>
+        <label id="lblWhyDisciple">17. Why do you want to become a disciple?</label>
         <textarea id="whyDisciple" rows="2" placeholder="Share your heart behind joining this program..."></textarea>
 
-        <label id="lblGifts">17. Your spiritual gifts</label>
+        <label id="lblGifts">18. Your spiritual gifts</label>
         <input type="text" id="spiritualGifts" placeholder="e.g., teaching, worship, outreach, prayer, leadership">
 
-        <label id="lblPrayer">18. Prayer requests or special needs</label>
+        <label id="lblPrayer">19. Prayer requests or special needs</label>
         <textarea id="prayerRequests" rows="2" placeholder="Any prayer requests or special needs..."></textarea>
 
         <!-- Document Upload -->
@@ -836,7 +840,7 @@
       
       const translations = {
         en: {
-          headerTitle: '✝️ From Membership to Discipleship',
+          headerTitle: 'From Membership to Discipleship',
           headerSubtitle: 'Living Branch Church Foundation',
           headerVerse: '"Go and make disciples of all nations" — Matthew 28:19',
           secPersonal: 'Personal Information',
@@ -855,21 +859,22 @@
           lblRole: '10. Your Responsibilities in the Church',
           lblChurchAddress: '11. Your Church Address',
           lblPastor: "12. Your Pastor's Name",
+          lblPastorContact: "13. Your Pastor's Contact Number",
           secFees: 'Registration & Fees',
-          lblRegFee: '13. Registration Fee (one time)',
+          lblRegFee: '14. Registration Fee (one time)',
           regFeeNote: '(one-time admission fee)',
-          lblMonthlyFee: '14. Monthly Fee Selection',
+          lblMonthlyFee: '15. Monthly Fee Selection',
           opt500: 'PKR 500/month',
           opt1000: 'PKR 1,000/month',
-          lblPaymentMethod: '15. Payment Method',
+          lblPaymentMethod: '16. Payment Method',
           optEasypaisa: 'Easypaisa',
           optJazzCash: 'JazzCash',
           paymentLabel: 'Easypaisa / JazzCash Number:',
           paymentDetailsNote: 'Please send the fee to the above number and share the screenshot with us.',
           secSpiritual: 'Your Spiritual Journey',
-          lblWhyDisciple: '16. Why do you want to become a disciple?',
-          lblGifts: '17. Your spiritual gifts',
-          lblPrayer: '18. Prayer requests or special needs',
+          lblWhyDisciple: '17. Why do you want to become a disciple?',
+          lblGifts: '18. Your spiritual gifts',
+          lblPrayer: '19. Prayer requests or special needs',
           secUploads: 'Document Upload',
           fileStatusText: 'Please upload your documents using the button below.',
           uploadBtnText: 'Upload Documents (CNIC + Photo)',
@@ -887,7 +892,7 @@
           thankYouUploadReminder: 'Don\'t forget to upload your documents using the button above!'
         },
         ur: {
-          headerTitle: '✝️ رکنیت سے شاگردیت تک',
+          headerTitle: 'رکنیت سے شاگردیت تک',
           headerSubtitle: 'لیونگ برانچ چرچ فاؤنڈیشن',
           headerVerse: '"جاؤ اور تمام قوموں کو شاگرد بناؤ" — متی 28:19',
           secPersonal: 'ذاتی معلومات',
@@ -906,21 +911,22 @@
           lblRole: '10. چرچ میں آپ کی ذمہ داریاں',
           lblChurchAddress: '11. آپ کے چرچ کا پتہ',
           lblPastor: '12. آپ کے پادری صاحب کا نام',
+          lblPastorContact: '13. آپ کے پادری کا رابطہ نمبر',
           secFees: 'رجسٹریشن اور فیس',
-          lblRegFee: '13. رجسٹریشن فیس (ایک بار)',
+          lblRegFee: '14. رجسٹریشن فیس (ایک بار)',
           regFeeNote: '(ایک بار کی داخلہ فیس)',
-          lblMonthlyFee: '14. ماہانہ فیس کا انتخاب',
+          lblMonthlyFee: '15. ماہانہ فیس کا انتخاب',
           opt500: 'پی کے آر 500/ماہ',
           opt1000: 'پی کے آر 1000/ماہ',
-          lblPaymentMethod: '15. ادائیگی کا طریقہ',
+          lblPaymentMethod: '16. ادائیگی کا طریقہ',
           optEasypaisa: 'ایزی پیزا',
           optJazzCash: 'جاز کیش',
           paymentLabel: 'ایزی پیزا / جاز کیش نمبر:',
           paymentDetailsNote: 'براہ کرم فیس مذکورہ نمبر پر بھیجیں اور اسکرین شاٹ ہمیں شیئر کریں۔',
           secSpiritual: 'آپ کا روحانی سفر',
-          lblWhyDisciple: '16. آپ شاگرد کیوں بننا چاہتے ہیں؟',
-          lblGifts: '17. آپ کی روحانی نعمت',
-          lblPrayer: '18. دعائیہ درخواست یا خصوصی ضرورت برائے داخلہ',
+          lblWhyDisciple: '17. آپ شاگرد کیوں بننا چاہتے ہیں؟',
+          lblGifts: '18. آپ کی روحانی نعمت',
+          lblPrayer: '19. دعائیہ درخواست یا خصوصی ضرورت برائے داخلہ',
           secUploads: 'دستاویزات اپ لوڈ کریں',
           fileStatusText: 'براہ کرم نیچے دیے گئے بٹن کا استعمال کرکے اپنی دستاویزات اپ لوڈ کریں۔',
           uploadBtnText: 'دستاویزات اپ لوڈ کریں (شناختی کارڈ + تصویر)',
@@ -941,7 +947,7 @@
 
       const t = translations[isUrdu ? 'ur' : 'en'];
       
-      document.getElementById('headerTitle').innerHTML = isUrdu ? '✝️ رکنیت سے شاگردیت تک' : '✝️ <span class="highlight">From Membership to</span> Discipleship';
+      document.getElementById('headerTitle').innerHTML = isUrdu ? t.headerTitle : '<span class="highlight">From Membership to</span> Discipleship';
       document.getElementById('foundationName').textContent = t.headerSubtitle;
       document.getElementById('headerVerse').innerHTML = '<i class="fas fa-quote-left"></i> ' + t.headerVerse;
       document.getElementById('secPersonal').textContent = t.secPersonal;
@@ -960,6 +966,7 @@
       document.getElementById('lblRole').textContent = t.lblRole;
       document.getElementById('lblChurchAddress').innerHTML = t.lblChurchAddress + ' <span class="required">*</span>';
       document.getElementById('lblPastor').innerHTML = t.lblPastor + ' <span class="required">*</span>';
+      document.getElementById('lblPastorContact').innerHTML = t.lblPastorContact + ' <span class="required">*</span>';
       document.getElementById('secFees').textContent = t.secFees;
       document.getElementById('lblRegFee').innerHTML = t.lblRegFee + ' <span class="required">*</span>';
       document.getElementById('regFeeNote').textContent = t.regFeeNote;
@@ -1074,6 +1081,7 @@
           roleInChurch: document.getElementById('roleInChurch').value.trim(),
           churchAddress: document.getElementById('churchAddress').value.trim(),
           pastorsName: document.getElementById('pastorsName').value.trim(),
+          pastorContact: document.getElementById('pastorContact').value.trim(),
           registrationFee: '1000',
           monthlyFee: monthlyFee,
           paymentMethod: paymentMethod,
