@@ -654,8 +654,9 @@
       <!-- VERSE: QUOTATION MARKS REMOVED              -->
       <!-- ============================================ -->
       <div class="verse" id="headerVerse">
-        <i class="fas fa-quote-left"></i> Go and make disciples of all nations — Matthew 28:19
-      </div>
+        <div class="verse" id="headerVerse">
+  Go and make disciples of all nations — Matthew 28:19
+</div>
     </div>
 
     <!-- FORM BODY -->
@@ -986,7 +987,7 @@
       }
       
       document.getElementById('foundationName').textContent = t.headerSubtitle;
-      document.getElementById('headerVerse').innerHTML = '<i class="fas fa-quote-left"></i> ' + t.headerVerse;
+      document.getElementById('headerVerse').textContent = t.headerVerse;
       document.getElementById('secPersonal').textContent = t.secPersonal;
       document.getElementById('lblFullName').innerHTML = t.lblFullName + ' <span class="required">*</span>';
       document.getElementById('lblFatherName').innerHTML = t.lblFatherName + ' <span class="required">*</span>';
