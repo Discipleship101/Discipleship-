@@ -166,19 +166,19 @@
     }
 
     .header h1 .highlight {
-      color: #c9a96e;  /* Only FROM MEMBERSHIP stays gold */
+      color: #c9a96e;
     }
 
     .header h1 .to-text {
       font-size: 0.8rem;
       letter-spacing: 6px;
-      color: #ffffff;  /* TO is now WHITE */
+      color: #ffffff;
       display: block;
       margin: 0.1rem 0;
     }
 
     .header h1 .discipleship-text {
-      color: #ffffff;  /* DISCIPLESHIP is now WHITE */
+      color: #ffffff;
     }
 
     .header .verse {
@@ -644,15 +644,15 @@
 
       <div class="foundation-name" id="foundationName">LIVING BRANCH CHURCH FOUNDATION</div>
       
-      <!-- ============================================ -->
-      <!-- TITLE: WHITE "TO" AND "DISCIPLESHIP"        -->
-      <!-- ============================================ -->
       <h1 id="headerTitle">
         <span class="highlight">FROM MEMBERSHIP</span>
         <span class="to-text">TO</span>
         <span class="discipleship-text">DISCIPLESHIP</span>
       </h1>
       
+      <!-- ============================================ -->
+      <!-- VERSE: QUOTATION MARKS REMOVED              -->
+      <!-- ============================================ -->
       <div class="verse" id="headerVerse">
         <i class="fas fa-quote-left"></i> Go and make disciples of all nations — Matthew 28:19
       </div>
@@ -870,7 +870,7 @@
         en: {
           headerTitle: 'FROM MEMBERSHIP TO DISCIPLESHIP',
           headerSubtitle: 'LIVING BRANCH CHURCH FOUNDATION',
-          headerVerse: 'Go and make disciples of all nations' — Matthew 28:19',
+          headerVerse: 'Go and make disciples of all nations — Matthew 28:19',
           secPersonal: 'Personal Information',
           lblFullName: '1. Full Name',
           lblFatherName: "2. Father's Name",
@@ -922,7 +922,7 @@
         ur: {
           headerTitle: 'رکنیت سے شاگردیت تک',
           headerSubtitle: 'لیونگ برانچ چرچ فاؤنڈیشن',
-          headerVerse: 'جاؤ اور تمام قوموں کو شاگرد بناؤ" — متی 28:19',
+          headerVerse: 'جاؤ اور تمام قوموں کو شاگرد بناؤ — متی 28:19',
           secPersonal: 'ذاتی معلومات',
           lblFullName: '1. پورا نام',
           lblFatherName: '2. والد کا نام',
@@ -975,9 +975,6 @@
 
       const t = translations[isUrdu ? 'ur' : 'en'];
       
-      // ============================================
-      // TITLE: WHITE "TO" AND "DISCIPLESHIP"
-      // ============================================
       if (isUrdu) {
         document.getElementById('headerTitle').innerHTML = t.headerTitle;
       } else {
@@ -1046,7 +1043,6 @@
     document.getElementById('uploadBtn').addEventListener('click', function() {
       const GOOGLE_FORM_ID = 'e/1FAIpQLSeneRJmLB1y4YUr4Vdf7Rk1Q_Ew4gy5w1EU8v1t9LMc5Y0Hlw';
       
-      // Replace with your actual Entry ID
       const WHATSAPP_FIELD_ID = 'entry.1234567890';
       
       const whatsappNumber = document.getElementById('whatsappNumber').value.trim();
@@ -1078,7 +1074,6 @@
     const displayMonthlyFee = document.getElementById('displayMonthlyFee');
     const displayPaymentMethod = document.getElementById('displayPaymentMethod');
 
-    // ✅ YOUR APPS SCRIPT URL
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5EB0KSVnPZrzMKjQIX8jdsbayYxG-8Ww5IMFqTliuBJv8ltA_olpRc8_2IDjuQP08eA/exec';
 
     form.addEventListener('submit', async function(e) {
