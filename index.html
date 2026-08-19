@@ -149,9 +149,6 @@
       z-index: 1;
     }
 
-    /* ============================================ */
-    /* TITLE STYLES - UPDATED WITH WHITE COLORS     */
-    /* ============================================ */
     .header h1 {
       font-family: 'Playfair Display', serif;
       color: #fff;
@@ -190,10 +187,6 @@
       opacity: 0.8;
       position: relative;
       z-index: 1;
-    }
-
-    .header .verse i {
-      color: #c9a96e;
     }
 
     .form-body {
@@ -587,7 +580,7 @@
       .form-body {
         padding: 1.5rem;
       }
-      
+
       .header h1 {
         font-size: 1.2rem;
       }
@@ -596,12 +589,12 @@
         font-size: 0.6rem;
         letter-spacing: 4px;
       }
-      
+
       .radio-group {
         gap: 1rem;
         flex-direction: column;
       }
-      
+
       .submit-btn {
         font-size: 1rem;
         padding: 14px;
@@ -631,7 +624,7 @@
 </head>
 <body>
   <div class="form-container">
-    
+
     <!-- HEADER -->
     <div class="header">
       <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">
@@ -643,27 +636,29 @@
       </div>
 
       <div class="foundation-name" id="foundationName">LIVING BRANCH CHURCH FOUNDATION</div>
-      
+
+      <!-- ============================================ -->
+      <!-- TITLE: WHITE "TO" AND "DISCIPLESHIP"        -->
+      <!-- ============================================ -->
       <h1 id="headerTitle">
         <span class="highlight">FROM MEMBERSHIP</span>
         <span class="to-text">TO</span>
         <span class="discipleship-text">DISCIPLESHIP</span>
       </h1>
-      
+
       <!-- ============================================ -->
-      <!-- VERSE: QUOTATION MARKS REMOVED              -->
+      <!-- VERSE: QUOTATION ICON AND MARKS REMOVED     -->
       <!-- ============================================ -->
       <div class="verse" id="headerVerse">
-        <div class="verse" id="headerVerse">
-  Go and make disciples of all nations — Matthew 28:19
-</div>
+        Go and make disciples of all nations — Matthew 28:19
+      </div>
     </div>
 
     <!-- FORM BODY -->
     <div class="form-body" id="formBody">
-      
+
       <form id="discipleForm">
-        
+
         <!-- Personal Information (includes Contact Details) -->
         <div class="section-title">
           <i class="fas fa-user"></i> <span id="secPersonal">Personal Information</span>
@@ -811,7 +806,7 @@
         <h2 id="thankTitle">Registration Complete! 🎉</h2>
         <p><strong style="color: #1a4a2a;" id="thankYouPrefix">Thank you, <span id="thankYouName"></span>!</strong></p>
         <p id="thankYouMessage">Your registration has been successfully saved.</p>
-        
+
         <div class="fee-summary">
           <p><strong id="summaryRegFee">📌 Registration Fee:</strong> <span>PKR 1,000</span> <span id="summaryRegFeeNote">(one-time)</span></p>
           <p><strong id="summaryMonthlyFee">📌 Monthly Fee:</strong> <span id="displayMonthlyFee"></span></p>
@@ -822,7 +817,7 @@
         <p style="font-size: 0.95rem; color: #1a4a2a; margin-top: 1rem;">
           <i class="fas fa-phone"></i> You will receive a confirmation on WhatsApp shortly.
         </p>
-        
+
         <p style="font-size: 0.9rem; color: #6b6b6b; margin-top: 1.5rem; border-top: 1px solid #e0e8e0; padding-top: 1.5rem;">
           <i class="fas fa-file-upload"></i>
           <span id="thankYouUploadReminder">Don't forget to upload your documents using the button above!</span>
@@ -847,7 +842,7 @@
     // ============================================
     // LANGUAGE TOGGLE
     // ============================================
-    
+
     let currentLang = 'en';
     let filesUploaded = false;
 
@@ -866,7 +861,7 @@
 
     function updateLanguage() {
       const isUrdu = currentLang === 'ur';
-      
+
       const translations = {
         en: {
           headerTitle: 'FROM MEMBERSHIP TO DISCIPLESHIP',
@@ -975,7 +970,7 @@
       };
 
       const t = translations[isUrdu ? 'ur' : 'en'];
-      
+
       if (isUrdu) {
         document.getElementById('headerTitle').innerHTML = t.headerTitle;
       } else {
@@ -985,7 +980,7 @@
           <span class="discipleship-text">DISCIPLESHIP</span>
         `;
       }
-      
+
       document.getElementById('foundationName').textContent = t.headerSubtitle;
       document.getElementById('headerVerse').textContent = t.headerVerse;
       document.getElementById('secPersonal').textContent = t.secPersonal;
@@ -1043,19 +1038,19 @@
 
     document.getElementById('uploadBtn').addEventListener('click', function() {
       const GOOGLE_FORM_ID = 'e/1FAIpQLSeneRJmLB1y4YUr4Vdf7Rk1Q_Ew4gy5w1EU8v1t9LMc5Y0Hlw';
-      
+
       const WHATSAPP_FIELD_ID = 'entry.1234567890';
-      
+
       const whatsappNumber = document.getElementById('whatsappNumber').value.trim();
-      
+
       if (!whatsappNumber) {
         alert(currentLang === 'ur' ? 'براہ کرم پہلے WhatsApp نمبر درج کریں' : 'Please enter your WhatsApp number first');
         return;
       }
-      
+
       const formUrl = `https://docs.google.com/forms/d/${GOOGLE_FORM_ID}/viewform?usp=pp_url&${WHATSAPP_FIELD_ID}=${encodeURIComponent(whatsappNumber)}`;
       window.open(formUrl, '_blank', 'width=600,height=700,scrollbars=yes');
-      
+
       const status = document.getElementById('fileStatus');
       status.className = 'file-status success';
       document.getElementById('fileStatusText').textContent = 
@@ -1153,7 +1148,7 @@
         loadingDiv.classList.remove('active');
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ' + (currentLang === 'ur' ? 'رجسٹریشن جمع کریں' : 'Submit Registration');
-        
+
         alert(currentLang === 'ur' ? 'کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں یا چرچ آفس سے رابطہ کریں۔' : 'Something went wrong. Please try again or contact the church office.');
       }
     });
