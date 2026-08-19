@@ -150,7 +150,7 @@
     }
 
     /* ============================================ */
-    /* TITLE STYLES - UPDATED FOR 3-LINE LAYOUT */
+    /* TITLE STYLES - UPDATED WITH WHITE COLORS     */
     /* ============================================ */
     .header h1 {
       font-family: 'Playfair Display', serif;
@@ -166,15 +166,19 @@
     }
 
     .header h1 .highlight {
-      color: #c9a96e;
+      color: #c9a96e;  /* Only FROM MEMBERSHIP stays gold */
     }
 
     .header h1 .to-text {
       font-size: 0.8rem;
       letter-spacing: 6px;
-      color: #c9a96e;
+      color: #ffffff;  /* TO is now WHITE */
       display: block;
       margin: 0.1rem 0;
+    }
+
+    .header h1 .discipleship-text {
+      color: #ffffff;  /* DISCIPLESHIP is now WHITE */
     }
 
     .header .verse {
@@ -641,12 +645,12 @@
       <div class="foundation-name" id="foundationName">LIVING BRANCH CHURCH FOUNDATION</div>
       
       <!-- ============================================ -->
-      <!-- UPDATED TITLE: 3-LINE LAYOUT                 -->
+      <!-- TITLE: WHITE "TO" AND "DISCIPLESHIP"        -->
       <!-- ============================================ -->
       <h1 id="headerTitle">
         <span class="highlight">FROM MEMBERSHIP</span>
         <span class="to-text">TO</span>
-        <span class="highlight">DISCIPLESHIP</span>
+        <span class="discipleship-text">DISCIPLESHIP</span>
       </h1>
       
       <div class="verse" id="headerVerse">
@@ -972,7 +976,7 @@
       const t = translations[isUrdu ? 'ur' : 'en'];
       
       // ============================================
-      // TITLE UPDATED FOR 3-LINE LAYOUT
+      // TITLE: WHITE "TO" AND "DISCIPLESHIP"
       // ============================================
       if (isUrdu) {
         document.getElementById('headerTitle').innerHTML = t.headerTitle;
@@ -980,7 +984,7 @@
         document.getElementById('headerTitle').innerHTML = `
           <span class="highlight">FROM MEMBERSHIP</span>
           <span class="to-text">TO</span>
-          <span class="highlight">DISCIPLESHIP</span>
+          <span class="discipleship-text">DISCIPLESHIP</span>
         `;
       }
       
