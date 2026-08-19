@@ -54,7 +54,7 @@
       color: #fff;
       padding: 8px 18px;
       border-radius: 30px;
-      font-size: 1.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -141,7 +141,7 @@
     .header .foundation-name {
       color: rgba(255, 255, 255, 0.6);
       font-size: 0.75rem;
-      letter-spacing: 2px;
+      letter-spacing: 4px;
       text-transform: uppercase;
       font-weight: 300;
       margin-bottom: 0.3rem;
@@ -149,19 +149,32 @@
       z-index: 1;
     }
 
+    /* ============================================ */
+    /* TITLE STYLES - UPDATED FOR 3-LINE LAYOUT */
+    /* ============================================ */
     .header h1 {
       font-family: 'Playfair Display', serif;
       color: #fff;
-      font-size: 2.2rem;
+      font-size: 1.6rem;
       font-weight: 900;
       margin-bottom: 0.2rem;
       position: relative;
       z-index: 1;
       text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+      line-height: 1.4;
+      letter-spacing: 2px;
     }
 
     .header h1 .highlight {
       color: #c9a96e;
+    }
+
+    .header h1 .to-text {
+      font-size: 0.8rem;
+      letter-spacing: 6px;
+      color: #c9a96e;
+      display: block;
+      margin: 0.1rem 0;
     }
 
     .header .verse {
@@ -572,7 +585,12 @@
       }
       
       .header h1 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+      }
+
+      .header h1 .to-text {
+        font-size: 0.6rem;
+        letter-spacing: 4px;
       }
       
       .radio-group {
@@ -620,9 +638,16 @@
         <img src="logo.jpeg" alt="Living Branch Church" class="logo-img" id="churchLogo">
       </div>
 
-      <div class="foundation-name" id="foundationName">Living Branch Church Foundation</div>
+      <div class="foundation-name" id="foundationName">LIVING BRANCH CHURCH FOUNDATION</div>
       
-      <h1 id="headerTitle"><span class="highlight">FROM MEMBERSHIP</span> TO <span class="highlight">DISCIPLESHIP</span></h1>
+      <!-- ============================================ -->
+      <!-- UPDATED TITLE: 3-LINE LAYOUT                 -->
+      <!-- ============================================ -->
+      <h1 id="headerTitle">
+        <span class="highlight">FROM MEMBERSHIP</span>
+        <span class="to-text">TO</span>
+        <span class="highlight">DISCIPLESHIP</span>
+      </h1>
       
       <div class="verse" id="headerVerse">
         <i class="fas fa-quote-left"></i> "Go and make disciples of all nations" — Matthew 28:19
@@ -839,8 +864,8 @@
       
       const translations = {
         en: {
-          headerTitle: 'From Membership to Discipleship',
-          headerSubtitle: 'Living Branch Church Foundation',
+          headerTitle: 'FROM MEMBERSHIP TO DISCIPLESHIP',
+          headerSubtitle: 'LIVING BRANCH CHURCH FOUNDATION',
           headerVerse: '"Go and make disciples of all nations" — Matthew 28:19',
           secPersonal: 'Personal Information',
           lblFullName: '1. Full Name',
@@ -946,7 +971,19 @@
 
       const t = translations[isUrdu ? 'ur' : 'en'];
       
-      document.getElementById('headerTitle').innerHTML = isUrdu ? t.headerTitle : '<span class="highlight">From Membership to</span> Discipleship';
+      // ============================================
+      // TITLE UPDATED FOR 3-LINE LAYOUT
+      // ============================================
+      if (isUrdu) {
+        document.getElementById('headerTitle').innerHTML = t.headerTitle;
+      } else {
+        document.getElementById('headerTitle').innerHTML = `
+          <span class="highlight">FROM MEMBERSHIP</span>
+          <span class="to-text">TO</span>
+          <span class="highlight">DISCIPLESHIP</span>
+        `;
+      }
+      
       document.getElementById('foundationName').textContent = t.headerSubtitle;
       document.getElementById('headerVerse').innerHTML = '<i class="fas fa-quote-left"></i> ' + t.headerVerse;
       document.getElementById('secPersonal').textContent = t.secPersonal;
@@ -1038,7 +1075,7 @@
     const displayPaymentMethod = document.getElementById('displayPaymentMethod');
 
     // ✅ YOUR APPS SCRIPT URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbWbwVH_3aJlMBXPzZxxEo4OurJ9sbkxSxn1iOi9X4U3CxNkJlL5rhNRkft9xeUZvimA/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5EB0KSVnPZrzMKjQIX8jdsbayYxG-8Ww5IMFqTliuBJv8ltA_olpRc8_2IDjuQP08eA/exec';
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
