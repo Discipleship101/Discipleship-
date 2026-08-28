@@ -202,7 +202,9 @@
       border-bottom: 2px solid #e8f0e8;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.75rem;
+      text-align: center;
     }
 
     .section-title i {
@@ -586,15 +588,53 @@
       margin-right: 3px;
     }
 
-    /* FIX: Donation statement alignment */
+    /* DONATION STATEMENT - FIXED FOR RTL */
+    .donation-statement {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f5f0eb !important;
+      padding: 14px 16px !important;
+      margin: 16px 0 !important;
+      border: 2px solid #c9a96e !important;
+      border-left: 6px solid #c9a96e !important;
+      border-radius: 8px;
+      color: #1a4a2a !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 14px !important;
+      line-height: 1.6 !important;
+      text-align: left !important;
+      width: 100% !important;
+      min-height: 72px !important;
+      clear: both !important;
+      position: relative !important;
+      z-index: 999 !important;
+    }
+
+    .donation-statement .donation-icon {
+      color: #c9a96e;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .donation-statement .donation-text {
+      color: #1a4a2a !important;
+      display: inline !important;
+    }
+
+    /* Urdu mode - override alignment and border */
     .lang-urdu .donation-statement {
       direction: rtl !important;
       text-align: right !important;
-      border-left: none !important;
+      border-left: 2px solid #c9a96e !important;
       border-right: 6px solid #c9a96e !important;
+      font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', sans-serif !important;
     }
 
-    .lang-urdu .donation-statement i {
+    .lang-urdu .donation-statement .donation-icon {
       margin-right: 0 !important;
       margin-left: 10px !important;
     }
@@ -761,29 +801,9 @@
           </div>
 
           <!-- DONATION STATEMENT -->
-          <div class="donation-statement" id="donationStatement" style="
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            background: #f5f0eb !important;
-            padding: 14px 16px !important;
-            margin: 16px 0 !important;
-            border: 2px solid #c9a96e !important;
-            border-left: 6px solid #c9a96e !important;
-            border-radius: 8px;
-            color: #1a4a2a !important;
-            font-family: 'Inter', sans-serif !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            text-align: left !important;
-            width: 100% !important;
-            min-height: 72px !important;
-            clear: both !important;
-            position: relative !important;
-            z-index: 999 !important;
-          ">
-            <span style="color: #c9a96e; font-size: 1.1rem; margin-right: 10px;">♥</span>
-            <span id="donationText" style="color: #1a4a2a !important; display: inline !important;">
+          <div class="donation-statement" id="donationStatement">
+            <span class="donation-icon">♥</span>
+            <span class="donation-text" id="donationText">
               If you feel led to support this vision, we welcome your voluntary financial contributions to help advance and strengthen this ministry.
             </span>
           </div>
@@ -914,195 +934,17 @@
 
       var translations = {
         en: {
-          headerTitle: 'FROM MEMBERSHIP TO DISCIPLESHIP',
-          headerSubtitle: 'LIVING BRANCH CHURCH FOUNDATION',
-          headerVerse: 'Go and make disciples of all nations — Matthew 28:19',
-          secPersonal: 'Personal Information',
-          lblFullName: '1. Full Name',
-          lblFatherName: "2. Father's Name",
-          lblDOB: '3. Date of Birth',
-          lblAddress: '4. Address',
-          lblCity: 'City',
-          lblCountry: 'Country',
-          lblEducation: '5. Education',
-          lblMobile: '6. Mobile Number',
-          lblWhatsApp: '7. WhatsApp Number',
-          lblEmail: '8. Email Address',
-          secChurch: 'Church Information',
-          lblChurchName: '9. Your Church Name',
-          lblRole: '10. Your Responsibilities in the Church',
-          lblChurchAddress: '11. Your Church Address',
-          lblPastor: "12. Your Pastor's Name",
-          lblPastorContact: "13. Your Pastor's Contact Number",
-          secFees: 'Registration & Fees',
-          lblRegFee: '14. Registration Fee (one time)',
-          regFeeNote: '(one-time admission fee)',
-          lblMonthlyFee: '15. Monthly Fee Selection',
-          opt500: 'PKR 500/month',
-          opt1000: 'PKR 1,000/month',
-          lblPaymentMethod: '16. Payment Method',
-          optEasypaisa: 'Easypaisa',
-          optJazzCash: 'JazzCash',
-          paymentLabel: 'Easypaisa / JazzCash Number:',
-          paymentDetailsNote: 'Please send the fee to the above number and share the screenshot with us.',
-          donationText: 'If you feel led to support this vision, we welcome your voluntary financial contributions to help advance and strengthen this ministry.',
-          secSpiritual: 'Your Spiritual Journey',
-          lblWhyDisciple: '17. Why do you want to become a disciple?',
-          lblGifts: '18. Your spiritual gifts',
-          lblPrayer: '19. Prayer requests or special needs',
-          secUploads: 'Document Upload',
-          fileStatusText: 'Please upload your documents using the button below.',
-          uploadBtnText: 'Upload Documents (CNIC + Photo)',
-          uploadNote: 'After uploading, please close the tab and return to this page to submit.',
-          uploadSuccessText: 'Documents uploaded successfully! Please submit the form below.',
-          loadingText: 'Submitting your registration...',
-          submitText: 'Submit Registration',
-          thankTitle: 'Registration Complete! 🎉',
-          thankYouPrefix: 'Thank you,',
-          thankYouMessage: 'Your registration has been successfully saved.',
-          summaryRegFee: 'Registration Fee:',
-          summaryRegFeeNote: '(one-time)',
-          summaryMonthlyFee: 'Monthly Fee:',
-          summaryPaymentMethod: 'Payment Method:',
-          footerTagline: '"Making disciples who make disciples"',
-          thankYouUploadReminder: 'Don\'t forget to upload your documents using the button above!'
+          donationText: 'If you feel led to support this vision, we welcome your voluntary financial contributions to help advance and strengthen this ministry.'
         },
         ur: {
-          headerTitle: 'رکنیت سے شاگردیت تک',
-          headerSubtitle: 'لیونگ برانچ چرچ فاؤنڈیشن',
-          headerVerse: 'جاؤ اور تمام قوموں کو شاگرد بناؤ — متی 28:19',
-          secPersonal: 'ذاتی معلومات',
-          lblFullName: '1. پورا نام',
-          lblFatherName: '2. والد کا نام',
-          lblDOB: '3. تاریخ پیدائش',
-          lblAddress: '4. پتہ',
-          lblCity: 'شہر',
-          lblCountry: 'ملک',
-          lblEducation: '5. تعلیم',
-          lblMobile: '6. موبائل نمبر',
-          lblWhatsApp: '7. واٹس ایپ نمبر',
-          lblEmail: '8. ای میل ایڈریس',
-          secChurch: 'چرچ کی معلومات',
-          lblChurchName: '9. آپ کے چرچ کا نام',
-          lblRole: '10. چرچ میں آپ کی ذمہ داریاں',
-          lblChurchAddress: '11. آپ کے چرچ کا پتہ',
-          lblPastor: '12. آپ کے پادری صاحب کا نام',
-          lblPastorContact: '13. آپ کے پادری کا رابطہ نمبر',
-          secFees: 'رجسٹریشن اور فیس',
-          lblRegFee: '14. رجسٹریشن فیس (ایک بار)',
-          regFeeNote: '(ایک بار کی داخلہ فیس)',
-          lblMonthlyFee: '15. ماہانہ فیس کا انتخاب',
-          opt500: 'پی کے آر 500/ماہ',
-          opt1000: 'پی کے آر 1000/ماہ',
-          lblPaymentMethod: '16. ادائیگی کا طریقہ',
-          optEasypaisa: 'ایزی پیزا',
-          optJazzCash: 'جاز کیش',
-          paymentLabel: 'ایزی پیزا / جاز کیش نمبر:',
-          paymentDetailsNote: 'براہ کرم فیس مذکورہ نمبر پر بھیجیں اور اسکرین شاٹ ہمیں شیئر کریں۔',
-          donationText: 'اگر آپ اس خدمت میں مالی تعاون کرنا چاہتے ہیں تو ہم آپ کا خیر مقدم کرتے ہیں۔',
-          secSpiritual: 'آپ کا روحانی سفر',
-          lblWhyDisciple: '17. آپ شاگرد کیوں بننا چاہتے ہیں؟',
-          lblGifts: '18. آپ کی روحانی نعمت',
-          lblPrayer: '19. دعائیہ درخواست یا خصوصی ضرورت برائے داخلہ',
-          secUploads: 'دستاویزات اپ لوڈ کریں',
-          fileStatusText: 'براہ کرم نیچے دیے گئے بٹن کا استعمال کرکے اپنی دستاویزات اپ لوڈ کریں۔',
-          uploadBtnText: 'دستاویزات اپ لوڈ کریں (شناختی کارڈ + تصویر)',
-          uploadNote: 'اپ لوڈ کرنے کے بعد، براہ کرم ٹیب بند کریں اور جمع کرانے کے لیے اس صفحہ پر واپس آئیں۔',
-          uploadSuccessText: 'دستاویزات کامیابی سے اپ لوڈ ہو گئیں! براہ کرم نیچے دیا گیا فارم جمع کریں۔',
-          loadingText: 'آپ کی رجسٹریشن جمع کرائی جا رہی ہے...',
-          submitText: 'رجسٹریشن جمع کریں',
-          thankTitle: 'رجسٹریشن مکمل! 🎉',
-          thankYouPrefix: 'شکریہ،',
-          thankYouMessage: 'آپ کی رجسٹریشن کامیابی سے محفوظ ہو گئی ہے۔',
-          summaryRegFee: 'رجسٹریشن فیس:',
-          summaryRegFeeNote: '(ایک بار)',
-          summaryMonthlyFee: 'ماہانہ فیس:',
-          summaryPaymentMethod: 'ادائیگی کا طریقہ:',
-          footerTagline: '"شاگرد بنانا جو شاگرد بنائیں"',
-          thankYouUploadReminder: 'اپنی دستاویزات کو اوپر دیے گئے بٹن کا استعمال کرکے اپ لوڈ کرنا نہ بھولیں!'
+          donationText: 'اگر آپ اس خدمت میں مالی تعاون کرنا چاہتے ہیں تو ہم آپ کا خیر مقدم کرتے ہیں۔'
         }
       };
 
       var t = translations[isUrdu ? 'ur' : 'en'];
 
-      // Update header
-      if (isUrdu) {
-        document.getElementById('headerTitle').innerHTML = t.headerTitle;
-      } else {
-        document.getElementById('headerTitle').innerHTML = `
-          <span class="highlight">FROM MEMBERSHIP</span>
-          <span class="to-text">TO</span>
-          <span class="discipleship-text">DISCIPLESHIP</span>
-        `;
-      }
-
-      document.getElementById('foundationName').textContent = t.headerSubtitle;
-      document.getElementById('headerVerse').textContent = t.headerVerse;
-
-      // Personal Information
-      document.getElementById('secPersonal').textContent = t.secPersonal;
-      document.getElementById('lblFullName').innerHTML = t.lblFullName + ' <span class="required">*</span>';
-      document.getElementById('lblFatherName').innerHTML = t.lblFatherName + ' <span class="required">*</span>';
-      document.getElementById('lblDOB').innerHTML = t.lblDOB + ' <span class="required">*</span>';
-      document.getElementById('lblAddress').innerHTML = t.lblAddress + ' <span class="required">*</span>';
-      document.getElementById('lblCity').innerHTML = t.lblCity + ' <span class="required">*</span>';
-      document.getElementById('lblCountry').innerHTML = t.lblCountry + ' <span class="required">*</span>';
-      document.getElementById('lblEducation').textContent = t.lblEducation;
-      document.getElementById('lblMobile').innerHTML = t.lblMobile + ' <span class="required">*</span>';
-      document.getElementById('lblWhatsApp').innerHTML = t.lblWhatsApp + ' <span class="required">*</span>';
-      document.getElementById('lblEmail').innerHTML = t.lblEmail + ' <span class="required">*</span>';
-
-      // Church Information
-      document.getElementById('secChurch').textContent = t.secChurch;
-      document.getElementById('lblChurchName').innerHTML = t.lblChurchName + ' <span class="required">*</span>';
-      document.getElementById('lblRole').textContent = t.lblRole;
-      document.getElementById('lblChurchAddress').innerHTML = t.lblChurchAddress + ' <span class="required">*</span>';
-      document.getElementById('lblPastor').innerHTML = t.lblPastor + ' <span class="required">*</span>';
-      document.getElementById('lblPastorContact').innerHTML = t.lblPastorContact + ' <span class="required">*</span>';
-
-      // Fees
-      document.getElementById('secFees').textContent = t.secFees;
-      document.getElementById('lblRegFee').innerHTML = t.lblRegFee + ' <span class="required">*</span>';
-      document.getElementById('regFeeNote').textContent = t.regFeeNote;
-      document.getElementById('lblMonthlyFee').innerHTML = t.lblMonthlyFee + ' <span class="required">*</span>';
-      document.getElementById('opt500').textContent = t.opt500;
-      document.getElementById('opt1000').textContent = t.opt1000;
-      document.getElementById('lblPaymentMethod').innerHTML = t.lblPaymentMethod + ' <span class="required">*</span>';
-      document.getElementById('optEasypaisa').textContent = t.optEasypaisa;
-      document.getElementById('optJazzCash').textContent = t.optJazzCash;
-      document.getElementById('paymentLabel').textContent = t.paymentLabel;
-      document.getElementById('paymentDetailsNote').textContent = t.paymentDetailsNote;
-
-      // DONATION TEXT - Update the donation statement text
+      // Update donation text
       document.getElementById('donationText').textContent = t.donationText;
-
-      // Spiritual Journey
-      document.getElementById('secSpiritual').textContent = t.secSpiritual;
-      document.getElementById('lblWhyDisciple').textContent = t.lblWhyDisciple;
-      document.getElementById('lblGifts').textContent = t.lblGifts;
-      document.getElementById('lblPrayer').textContent = t.lblPrayer;
-
-      // Uploads
-      document.getElementById('secUploads').textContent = t.secUploads;
-      document.getElementById('fileStatusText').textContent = t.fileStatusText;
-      document.getElementById('uploadBtnText').textContent = t.uploadBtnText;
-      document.getElementById('uploadNote').textContent = t.uploadNote;
-      document.getElementById('uploadSuccessText').textContent = t.uploadSuccessText;
-
-      // Submit & Loading
-      document.getElementById('loadingText').textContent = t.loadingText;
-      document.getElementById('submitText').textContent = t.submitText;
-
-      // Thank You
-      document.getElementById('thankTitle').textContent = t.thankTitle;
-      document.getElementById('thankYouPrefix').innerHTML = t.thankYouPrefix + ' <span id="thankYouName"></span>!';
-      document.getElementById('thankYouMessage').textContent = t.thankYouMessage;
-      document.getElementById('summaryRegFee').innerHTML = t.summaryRegFee + ' <span>PKR 1,000</span>';
-      document.getElementById('summaryRegFeeNote').textContent = t.summaryRegFeeNote;
-      document.getElementById('summaryMonthlyFee').innerHTML = t.summaryMonthlyFee + ' <span id="displayMonthlyFee"></span>';
-      document.getElementById('summaryPaymentMethod').innerHTML = t.summaryPaymentMethod + ' <span id="displayPaymentMethod"></span>';
-      document.getElementById('footerTagline').textContent = t.footerTagline;
-      document.getElementById('thankYouUploadReminder').textContent = t.thankYouUploadReminder;
     }
 
     // UPLOAD BUTTON
