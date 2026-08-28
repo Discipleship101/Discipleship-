@@ -550,7 +550,45 @@
       color: #155724;
     }
 
-    /* DONATION STATEMENT - FIXED FOR RTL */
+    .lang-urdu label,
+    .lang-urdu .section-title,
+    .lang-urdu .fee-label,
+    .lang-urdu .submit-btn,
+    .lang-urdu .fee-section p,
+    .lang-urdu .file-status {
+      font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', sans-serif !important;
+      direction: rtl !important;
+      text-align: right !important;
+    }
+
+    .lang-urdu input,
+    .lang-urdu select,
+    .lang-urdu textarea {
+      direction: rtl !important;
+      text-align: right !important;
+      font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', sans-serif !important;
+    }
+
+    .lang-urdu .radio-group label {
+      direction: rtl !important;
+      text-align: right !important;
+    }
+
+    .lang-urdu .radio-group {
+      justify-content: flex-end !important;
+    }
+
+    .lang-urdu .section-title i {
+      margin-left: 0.75rem;
+      margin-right: 0;
+    }
+
+    .lang-urdu .required {
+      margin-left: 0;
+      margin-right: 3px;
+    }
+
+    /* DONATION STATEMENT */
     .donation-statement {
       display: flex !important;
       visibility: visible !important;
@@ -587,7 +625,6 @@
       display: inline !important;
     }
 
-    /* Urdu mode - override alignment and border */
     .lang-urdu .donation-statement {
       direction: rtl !important;
       text-align: right !important;
@@ -599,53 +636,6 @@
     .lang-urdu .donation-statement .donation-icon {
       margin-right: 0 !important;
       margin-left: 10px !important;
-    }
-
-    /* Language toggle for Urdu */
-    .lang-urdu label,
-    .lang-urdu .section-title,
-    .lang-urdu .fee-label,
-    .lang-urdu .submit-btn,
-    .lang-urdu .fee-section p,
-    .lang-urdu .file-status,
-    .lang-urdu .donation-statement,
-    .lang-urdu .payment-number-display,
-    .lang-urdu .upload-note {
-      font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', sans-serif !important;
-      direction: rtl !important;
-      text-align: right !important;
-    }
-
-    .lang-urdu input,
-    .lang-urdu select,
-    .lang-urdu textarea {
-      direction: rtl !important;
-      text-align: right !important;
-      font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', sans-serif !important;
-    }
-
-    .lang-urdu .radio-group label {
-      direction: rtl !important;
-      text-align: right !important;
-    }
-
-    .lang-urdu .radio-group {
-      justify-content: flex-end !important;
-    }
-
-    .lang-urdu .section-title i {
-      margin-left: 0.75rem;
-      margin-right: 0;
-    }
-
-    .lang-urdu .required {
-      margin-left: 0;
-      margin-right: 3px;
-    }
-
-    /* QR Code - RTL support */
-    .lang-urdu .qr-code-container {
-      direction: rtl !important;
     }
 
     /* Mobile responsiveness */
@@ -807,7 +797,7 @@
           </p>
           <input type="hidden" id="registrationFee" value="1000">
 
-          <!-- TWO COLUMN LAYOUT: Left side (Monthly Fee + Payment) | Right side (QR Code) -->
+          <!-- TWO COLUMN LAYOUT -->
           <div class="two-column-layout" style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
             
             <!-- LEFT COLUMN -->
@@ -839,7 +829,8 @@
               <p style="color: #1a4a2a; font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; letter-spacing: 0.5px;">
                 <span id="qrLabel">Scan the QR Code</span>
               </p>
-              <img src="qr-code.png" alt="QR Code" style="
+              <!-- QR Code image - showing Easypaisa QR by default -->
+              <img id="qrCodeImage" src="easypaisa-qr.jpeg" alt="QR Code" style="
                 max-width: 120px;
                 width: 100%;
                 height: auto;
@@ -857,7 +848,7 @@
           </div>
           <!-- END TWO COLUMN LAYOUT -->
 
-          <!-- DONATION STATEMENT - Full width -->
+          <!-- DONATION STATEMENT -->
           <div class="donation-statement" id="donationStatement">
             <span class="donation-icon">♥</span>
             <span class="donation-text" id="donationText">
@@ -985,6 +976,18 @@
       }
       updateLanguage();
     }
+
+    // QR CODE SWITCHING - Change QR image based on selected payment method
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        var qrImage = document.getElementById('qrCodeImage');
+        if (this.value === 'Easypaisa') {
+          qrImage.src = 'easypaisa-qr.jpeg';
+        } else if (this.value === 'JazzCash') {
+          qrImage.src = 'jazzcash-qr.jpeg';
+        }
+      });
+    });
 
     function updateLanguage() {
       var isUrdu = currentLang === 'ur';
@@ -1154,10 +1157,10 @@
       document.getElementById('paymentLabel').textContent = t.paymentLabel;
       document.getElementById('paymentDetailsNote').textContent = t.paymentDetailsNote;
 
-      // DONATION TEXT - Update the donation statement text
+      // DONATION TEXT
       document.getElementById('donationText').textContent = t.donationText;
 
-      // QR CODE - Update QR text
+      // QR CODE
       document.getElementById('qrLabel').textContent = t.qrLabel;
       document.getElementById('qrNumber').textContent = t.qrNumber;
 
