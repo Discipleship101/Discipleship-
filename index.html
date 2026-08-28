@@ -586,42 +586,6 @@
       margin-right: 3px;
     }
 
-    /* QR Code styles - ADDED */
-    .qr-container {
-      display: flex;
-      justify-content: center;
-      margin: 12px 0 4px 0;
-    }
-
-    .qr-container img {
-      max-width: 180px;
-      height: auto;
-      border-radius: 12px;
-      border: 2px solid #e0e8e0;
-      padding: 8px;
-      background: #ffffff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s ease;
-    }
-
-    .qr-container img:hover {
-      transform: scale(1.02);
-      border-color: #c9a96e;
-      box-shadow: 0 8px 24px rgba(201, 169, 110, 0.2);
-    }
-
-    .qr-container img.hidden-qr {
-      display: none;
-    }
-
-    .payment-number-display {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
     @media (max-width: 600px) {
       .form-body {
         padding: 1.5rem;
@@ -665,10 +629,6 @@
       .footer .social-links a {
         font-size: 1.2rem;
       }
-
-      .qr-container img {
-        max-width: 140px;
-      }
     }
   </style>
 </head>
@@ -703,9 +663,7 @@
 
       <form id="discipleForm">
 
-        <!-- ============================================ -->
-        <!-- PERSONAL INFORMATION                         -->
-        <!-- ============================================ -->
+        <!-- PERSONAL INFORMATION -->
         <div class="section-title">
           <i class="fas fa-user"></i> <span id="secPersonal">Personal Information</span>
         </div>
@@ -736,9 +694,6 @@
         <label id="lblEducation">5. Education</label>
         <input type="text" id="education" placeholder="e.g., Bachelor's, Master's">
 
-        <!-- ============================================ -->
-        <!-- CONTACT INFORMATION (Part of Personal Info)  -->
-        <!-- ============================================ -->
         <label id="lblMobile">6. Mobile Number <span class="required">*</span></label>
         <input type="tel" id="mobileNumber" required placeholder="e.g., 923001234567">
 
@@ -748,9 +703,7 @@
         <label id="lblEmail">8. Email Address <span class="required">*</span></label>
         <input type="email" id="email" required placeholder="Enter your email address">
 
-        <!-- ============================================ -->
-        <!-- CHURCH INFORMATION                           -->
-        <!-- ============================================ -->
+        <!-- CHURCH INFORMATION -->
         <div class="section-title" style="margin-top: 1.5rem;">
           <i class="fas fa-church"></i> <span id="secChurch">Church Information</span>
         </div>
@@ -770,9 +723,7 @@
         <label id="lblPastorContact">13. Your Pastor's Contact Number <span class="required">*</span></label>
         <input type="tel" id="pastorContact" required placeholder="e.g., 923001234567">
 
-        <!-- ============================================ -->
-        <!-- REGISTRATION & FEES                          -->
-        <!-- ============================================ -->
+        <!-- REGISTRATION & FEES -->
         <div class="fee-section">
           <div class="section-title" style="border-bottom: none; margin-bottom: 0.5rem;">
             <i class="fas fa-coins"></i> <span id="secFees">Registration & Fees</span>
@@ -792,14 +743,48 @@
 
           <label class="fee-label" style="margin-top: 1rem;" id="lblPaymentMethod">16. Payment Method <span class="required">*</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="paymentMethod" value="Easypaisa" required id="radioEasypaisa"> <span id="optEasypaisa">Easypaisa</span></label>
-            <label><input type="radio" name="paymentMethod" value="JazzCash" id="radioJazzCash"> <span id="optJazzCash">JazzCash</span></label>
+            <label><input type="radio" name="paymentMethod" value="Easypaisa" required> <span id="optEasypaisa">Easypaisa</span></label>
+            <label><input type="radio" name="paymentMethod" value="JazzCash"> <span id="optJazzCash">JazzCash</span></label>
           </div>
 
-          <!-- QR CODE DISPLAY - ADDED -->
-          <div class="qr-container">
-            <img src="easypaisa-qr.jpeg" alt="Easypaisa QR Code" id="qrEasypaisa">
-            <img src="jazzcash-qr.jpeg" alt="JazzCash QR Code" id="qrJazzCash" class="hidden-qr">
+          <!-- DONATION STATEMENT
+               Placed before the payment/QR area so it is visible in the fees section. -->
+          <div
+            id="donationStatement"
+            role="note"
+            aria-live="polite"
+            style="
+              display: block !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+              width: 100%;
+              min-height: 72px;
+              clear: both;
+              position: relative;
+              z-index: 10;
+              background: #f5f0eb !important;
+              padding: 14px 16px !important;
+              margin: 16px 0 !important;
+              border: 2px solid #c9a96e !important;
+              border-left: 6px solid #c9a96e !important;
+              border-radius: 8px;
+              color: #1a4a2a !important;
+              font-family: 'Inter', sans-serif !important;
+              font-size: 14px !important;
+              line-height: 1.6 !important;
+              text-align: left !important;
+            "
+          >
+            <span
+              aria-hidden="true"
+              style="color: #c9a96e; font-size: 1.1rem; margin-right: 10px;"
+            >♥</span>
+            <span
+              id="donationText"
+              style="color: #1a4a2a !important; display: inline !important;"
+            >
+              If you feel led to support this vision, we welcome your voluntary financial contributions to help advance and strengthen this ministry.
+            </span>
           </div>
 
           <div class="payment-number-display">
@@ -809,11 +794,10 @@
           <p style="font-size: 0.8rem; color: #8a7a72; margin-top: 0.5rem;">
             <i class="fas fa-info-circle"></i> <span id="paymentDetailsNote">Please send the fee to the above number and share the screenshot with us.</span>
           </p>
+
         </div>
 
-        <!-- ============================================ -->
-        <!-- YOUR SPIRITUAL JOURNEY                       -->
-        <!-- ============================================ -->
+        <!-- YOUR SPIRITUAL JOURNEY -->
         <div class="section-title" style="margin-top: 1.5rem;">
           <i class="fas fa-heart"></i> <span id="secSpiritual">Your Spiritual Journey</span>
         </div>
@@ -827,9 +811,7 @@
         <label id="lblPrayer">19. Prayer requests or special needs</label>
         <textarea id="prayerRequests" rows="2" placeholder="Any prayer requests or special needs..."></textarea>
 
-        <!-- ============================================ -->
-        <!-- DOCUMENT UPLOAD                              -->
-        <!-- ============================================ -->
+        <!-- DOCUMENT UPLOAD -->
         <div class="section-title" style="margin-top: 1.5rem;">
           <i class="fas fa-id-card"></i> <span id="secUploads">Document Upload</span>
         </div>
@@ -853,7 +835,7 @@
 
         <div id="uploadSuccessMessage">
           <i class="fas fa-check-circle"></i>
-          <span id="uploadSuccessText">✅ Documents uploaded successfully! Please submit the form below.</span>
+          <span id="uploadSuccessText">Documents uploaded successfully! Please submit the form below.</span>
         </div>
 
         <div class="loading" id="loading">
@@ -867,9 +849,7 @@
         </button>
       </form>
 
-      <!-- ============================================ -->
-      <!-- THANK YOU SECTION                            -->
-      <!-- ============================================ -->
+      <!-- THANK YOU SECTION -->
       <div id="thankYou">
         <div class="thank-you-icon">
           <i class="fas fa-check-circle"></i>
@@ -879,10 +859,10 @@
         <p id="thankYouMessage">Your registration has been successfully saved.</p>
 
         <div class="fee-summary">
-          <p><strong id="summaryRegFee">📌 Registration Fee:</strong> <span>PKR 1,000</span> <span id="summaryRegFeeNote">(one-time)</span></p>
-          <p><strong id="summaryMonthlyFee">📌 Monthly Fee:</strong> <span id="displayMonthlyFee"></span></p>
-          <p><strong id="summaryPaymentMethod">📌 Payment Method:</strong> <span id="displayPaymentMethod"></span></p>
-          <p><strong>📌 Send Payment To:</strong> <span>0301-5661600</span></p>
+          <p><strong id="summaryRegFee">Registration Fee:</strong> <span>PKR 1,000</span> <span id="summaryRegFeeNote">(one-time)</span></p>
+          <p><strong id="summaryMonthlyFee">Monthly Fee:</strong> <span id="displayMonthlyFee"></span></p>
+          <p><strong id="summaryPaymentMethod">Payment Method:</strong> <span id="displayPaymentMethod"></span></p>
+          <p><strong>Send Payment To:</strong> <span>0301-5661600</span></p>
         </div>
 
         <p style="font-size: 0.95rem; color: #1a4a2a; margin-top: 1rem;">
@@ -896,9 +876,7 @@
       </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- FOOTER                                       -->
-    <!-- ============================================ -->
+    <!-- FOOTER -->
     <div class="footer">
       <div class="social-links">
         <a href="https://www.tiktok.com/@pastorshoukatsiddique" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
@@ -912,12 +890,9 @@
   </div>
 
   <script>
-    // ============================================
     // LANGUAGE TOGGLE
-    // ============================================
-
-    let currentLang = 'en';
-    let filesUploaded = false;
+    var currentLang = 'en';
+    var filesUploaded = false;
 
     function toggleLanguage() {
       if (currentLang === 'en') {
@@ -933,9 +908,9 @@
     }
 
     function updateLanguage() {
-      const isUrdu = currentLang === 'ur';
+      var isUrdu = currentLang === 'ur';
 
-      const translations = {
+      var translations = {
         en: {
           headerTitle: 'FROM MEMBERSHIP TO DISCIPLESHIP',
           headerSubtitle: 'LIVING BRANCH CHURCH FOUNDATION',
@@ -982,10 +957,10 @@
           thankTitle: 'Registration Complete! 🎉',
           thankYouPrefix: 'Thank you,',
           thankYouMessage: 'Your registration has been successfully saved.',
-          summaryRegFee: '📌 Registration Fee:',
+          summaryRegFee: 'Registration Fee:',
           summaryRegFeeNote: '(one-time)',
-          summaryMonthlyFee: '📌 Monthly Fee:',
-          summaryPaymentMethod: '📌 Payment Method:',
+          summaryMonthlyFee: 'Monthly Fee:',
+          summaryPaymentMethod: 'Payment Method:',
           footerTagline: '"Making disciples who make disciples"',
           thankYouUploadReminder: 'Don\'t forget to upload your documents using the button above!'
         },
@@ -1035,17 +1010,18 @@
           thankTitle: 'رجسٹریشن مکمل! 🎉',
           thankYouPrefix: 'شکریہ،',
           thankYouMessage: 'آپ کی رجسٹریشن کامیابی سے محفوظ ہو گئی ہے۔',
-          summaryRegFee: '📌 رجسٹریشن فیس:',
+          summaryRegFee: 'رجسٹریشن فیس:',
           summaryRegFeeNote: '(ایک بار)',
-          summaryMonthlyFee: '📌 ماہانہ فیس:',
-          summaryPaymentMethod: '📌 ادائیگی کا طریقہ:',
+          summaryMonthlyFee: 'ماہانہ فیس:',
+          summaryPaymentMethod: 'ادائیگی کا طریقہ:',
           footerTagline: '"شاگرد بنانا جو شاگرد بنائیں"',
           thankYouUploadReminder: 'اپنی دستاویزات کو اوپر دیے گئے بٹن کا استعمال کرکے اپ لوڈ کرنا نہ بھولیں!'
         }
       };
 
-      const t = translations[isUrdu ? 'ur' : 'en'];
+      var t = translations[isUrdu ? 'ur' : 'en'];
 
+      // Update header
       if (isUrdu) {
         document.getElementById('headerTitle').innerHTML = t.headerTitle;
       } else {
@@ -1058,6 +1034,8 @@
 
       document.getElementById('foundationName').textContent = t.headerSubtitle;
       document.getElementById('headerVerse').textContent = t.headerVerse;
+
+      // Personal Information
       document.getElementById('secPersonal').textContent = t.secPersonal;
       document.getElementById('lblFullName').innerHTML = t.lblFullName + ' <span class="required">*</span>';
       document.getElementById('lblFatherName').innerHTML = t.lblFatherName + ' <span class="required">*</span>';
@@ -1069,12 +1047,16 @@
       document.getElementById('lblMobile').innerHTML = t.lblMobile + ' <span class="required">*</span>';
       document.getElementById('lblWhatsApp').innerHTML = t.lblWhatsApp + ' <span class="required">*</span>';
       document.getElementById('lblEmail').innerHTML = t.lblEmail + ' <span class="required">*</span>';
+
+      // Church Information
       document.getElementById('secChurch').textContent = t.secChurch;
       document.getElementById('lblChurchName').innerHTML = t.lblChurchName + ' <span class="required">*</span>';
       document.getElementById('lblRole').textContent = t.lblRole;
       document.getElementById('lblChurchAddress').innerHTML = t.lblChurchAddress + ' <span class="required">*</span>';
       document.getElementById('lblPastor').innerHTML = t.lblPastor + ' <span class="required">*</span>';
       document.getElementById('lblPastorContact').innerHTML = t.lblPastorContact + ' <span class="required">*</span>';
+
+      // Fees
       document.getElementById('secFees').textContent = t.secFees;
       document.getElementById('lblRegFee').innerHTML = t.lblRegFee + ' <span class="required">*</span>';
       document.getElementById('regFeeNote').textContent = t.regFeeNote;
@@ -1086,17 +1068,25 @@
       document.getElementById('optJazzCash').textContent = t.optJazzCash;
       document.getElementById('paymentLabel').textContent = t.paymentLabel;
       document.getElementById('paymentDetailsNote').textContent = t.paymentDetailsNote;
+
+      // Spiritual Journey
       document.getElementById('secSpiritual').textContent = t.secSpiritual;
       document.getElementById('lblWhyDisciple').textContent = t.lblWhyDisciple;
       document.getElementById('lblGifts').textContent = t.lblGifts;
       document.getElementById('lblPrayer').textContent = t.lblPrayer;
+
+      // Uploads
       document.getElementById('secUploads').textContent = t.secUploads;
       document.getElementById('fileStatusText').textContent = t.fileStatusText;
       document.getElementById('uploadBtnText').textContent = t.uploadBtnText;
       document.getElementById('uploadNote').textContent = t.uploadNote;
       document.getElementById('uploadSuccessText').textContent = t.uploadSuccessText;
+
+      // Submit & Loading
       document.getElementById('loadingText').textContent = t.loadingText;
       document.getElementById('submitText').textContent = t.submitText;
+
+      // Thank You
       document.getElementById('thankTitle').textContent = t.thankTitle;
       document.getElementById('thankYouPrefix').innerHTML = t.thankYouPrefix + ' <span id="thankYouName"></span>!';
       document.getElementById('thankYouMessage').textContent = t.thankYouMessage;
@@ -1108,134 +1098,97 @@
       document.getElementById('thankYouUploadReminder').textContent = t.thankYouUploadReminder;
     }
 
-    // ============================================
-    // QR CODE TOGGLE - ADDED
-    // ============================================
-
-    const radioEasypaisa = document.getElementById('radioEasypaisa');
-    const radioJazzCash = document.getElementById('radioJazzCash');
-    const qrEasypaisa = document.getElementById('qrEasypaisa');
-    const qrJazzCash = document.getElementById('qrJazzCash');
-
-    function updateQrCode() {
-      if (radioEasypaisa.checked) {
-        qrEasypaisa.classList.remove('hidden-qr');
-        qrJazzCash.classList.add('hidden-qr');
-      } else if (radioJazzCash.checked) {
-        qrEasypaisa.classList.add('hidden-qr');
-        qrJazzCash.classList.remove('hidden-qr');
-      }
-    }
-
-    radioEasypaisa.addEventListener('change', updateQrCode);
-    radioJazzCash.addEventListener('change', updateQrCode);
-
-    // Show Easypaisa QR by default
-    window.addEventListener('DOMContentLoaded', function() {
-      radioEasypaisa.checked = true;
-      updateQrCode();
-    });
-
-    // ============================================
-    // OPEN GOOGLE FORM FOR FILE UPLOADS
-    // ============================================
-
+    // UPLOAD BUTTON
     document.getElementById('uploadBtn').addEventListener('click', function() {
-      const GOOGLE_FORM_ID = 'e/1FAIpQLSeneRJmLB1y4YUr4Vdf7Rk1Q_Ew4gy5w1EU8v1t9LMc5Y0Hlw';
-      const WHATSAPP_FIELD_ID = 'entry.1234567890';
+      var GOOGLE_FORM_ID = 'e/1FAIpQLSeneRJmLB1y4YUr4Vdf7Rk1Q_Ew4gy5w1EU8v1t9LMc5Y0Hlw';
+      var WHATSAPP_FIELD_ID = 'entry.1234567890';
 
-      const whatsappNumber = document.getElementById('whatsappNumber').value.trim();
+      var whatsappNumber = document.getElementById('whatsappNumber').value.trim();
 
       if (!whatsappNumber) {
-        alert(currentLang === 'ur' ? 'براہ کرم پہلے WhatsApp نمبر درج کریں' : 'Please enter your WhatsApp number first');
+        alert('Please enter your WhatsApp number first');
         return;
       }
 
-      const formUrl = `https://docs.google.com/forms/d/${GOOGLE_FORM_ID}/viewform?usp=pp_url&${WHATSAPP_FIELD_ID}=${encodeURIComponent(whatsappNumber)}`;
+      var formUrl = 'https://docs.google.com/forms/d/' + GOOGLE_FORM_ID + '/viewform?usp=pp_url&' + WHATSAPP_FIELD_ID + '=' + encodeURIComponent(whatsappNumber);
 
-      const newWindow = window.open(formUrl, '_blank', 'width=600,height=700,scrollbars=yes');
+      var newWindow = window.open(formUrl, '_blank', 'width=600,height=700,scrollbars=yes');
 
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
         window.open(formUrl, '_blank');
       }
 
-      const status = document.getElementById('fileStatus');
+      var status = document.getElementById('fileStatus');
       status.className = 'file-status success';
-      document.getElementById('fileStatusText').textContent = 
-        currentLang === 'ur' ? '📤 دستاویزات اپ لوڈ کرنے کے لیے نیا ٹیب کھل گیا ہے۔ اپ لوڈ مکمل کرنے کے بعد یہاں واپس آئیں۔' : '📤 A new tab has opened to upload your documents. Please return here after uploading.';
+      document.getElementById('fileStatusText').textContent = 'A new tab has opened to upload your documents. Please return here after uploading.';
 
-      setTimeout(() => {
-        const successMsg = document.getElementById('uploadSuccessMessage');
+      setTimeout(function() {
+        var successMsg = document.getElementById('uploadSuccessMessage');
         successMsg.style.display = 'block';
         filesUploaded = true;
         document.getElementById('filesUploaded').value = 'true';
 
-        const status = document.getElementById('fileStatus');
+        var status = document.getElementById('fileStatus');
         status.className = 'file-status success';
-        document.getElementById('fileStatusText').textContent = 
-          currentLang === 'ur' ? '✅ دستاویزات اپ لوڈ ہو گئیں! براہ کرم ذیل میں فارم جمع کریں۔' : '✅ Documents uploaded! Please submit the form below.';
+        document.getElementById('fileStatusText').textContent = 'Documents uploaded! Please submit the form below.';
       }, 30000);
 
       if (newWindow) {
-        const checkWindow = setInterval(() => {
+        var checkWindow = setInterval(function() {
           if (newWindow.closed) {
             clearInterval(checkWindow);
-            const successMsg = document.getElementById('uploadSuccessMessage');
+            var successMsg = document.getElementById('uploadSuccessMessage');
             successMsg.style.display = 'block';
             filesUploaded = true;
             document.getElementById('filesUploaded').value = 'true';
 
-            const status = document.getElementById('fileStatus');
+            var status = document.getElementById('fileStatus');
             status.className = 'file-status success';
-            document.getElementById('fileStatusText').textContent = 
-              currentLang === 'ur' ? '✅ دستاویزات اپ لوڈ ہو گئیں! براہ کرم ذیل میں فارم جمع کریں۔' : '✅ Documents uploaded! Please submit the form below.';
+            document.getElementById('fileStatusText').textContent = 'Documents uploaded! Please submit the form below.';
           }
         }, 1000);
       }
     });
 
-    // ============================================
     // FORM SUBMISSION
-    // ============================================
+    var form = document.getElementById('discipleForm');
+    var thankYouDiv = document.getElementById('thankYou');
+    var loadingDiv = document.getElementById('loading');
+    var submitBtn = document.getElementById('submitBtn');
+    var thankYouName = document.getElementById('thankYouName');
+    var displayMonthlyFee = document.getElementById('displayMonthlyFee');
+    var displayPaymentMethod = document.getElementById('displayPaymentMethod');
 
-    const form = document.getElementById('discipleForm');
-    const thankYouDiv = document.getElementById('thankYou');
-    const loadingDiv = document.getElementById('loading');
-    const submitBtn = document.getElementById('submitBtn');
-    const thankYouName = document.getElementById('thankYouName');
-    const displayMonthlyFee = document.getElementById('displayMonthlyFee');
-    const displayPaymentMethod = document.getElementById('displayPaymentMethod');
-
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbWbwVH_3aJlMBXPzZxxEo4OurJ9sbkxSxn1iOi9X4U3CxNkJlL5rhNRkft9xeUZvimA/exec';
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnVkev-iLQuxBsnSlKPEIGl7-vYi03M7V3MsIQuJDcX2zaIXBTr2Ldh2UD9r1mEzu-2g/exec';
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const filesUploadedHidden = document.getElementById('filesUploaded').value === 'true';
+      var filesUploadedHidden = document.getElementById('filesUploaded').value === 'true';
 
       if (!filesUploaded && !filesUploadedHidden) {
-        alert(currentLang === 'ur' ? 'براہ کرم اپنی دستاویزات اپ لوڈ کریں (شناختی کارڈ + تصویر)' : 'Please upload your documents (CNIC + Photo)');
+        alert('Please upload your documents (CNIC + Photo)');
         return;
       }
 
       loadingDiv.classList.add('active');
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (currentLang === 'ur' ? 'جمع کر رہے ہیں...' : 'Submitting...');
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
 
       try {
-        const monthlyFeeRadios = document.querySelectorAll('input[name="monthlyFee"]');
-        let monthlyFee = '';
-        for (const radio of monthlyFeeRadios) {
-          if (radio.checked) monthlyFee = radio.value;
+        var monthlyFeeRadios = document.querySelectorAll('input[name="monthlyFee"]');
+        var monthlyFee = '';
+        for (var i = 0; i < monthlyFeeRadios.length; i++) {
+          if (monthlyFeeRadios[i].checked) monthlyFee = monthlyFeeRadios[i].value;
         }
 
-        const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
-        let paymentMethod = '';
-        for (const radio of paymentRadios) {
-          if (radio.checked) paymentMethod = radio.value;
+        var paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+        var paymentMethod = '';
+        for (var j = 0; j < paymentRadios.length; j++) {
+          if (paymentRadios[j].checked) paymentMethod = paymentRadios[j].value;
         }
 
-        const formData = {
+        var formData = {
           fullName: document.getElementById('fullName').value.trim(),
           fathersName: document.getElementById('fathersName').value.trim(),
           dateOfBirth: document.getElementById('dateOfBirth').value,
@@ -1259,7 +1212,7 @@
           prayerRequests: document.getElementById('prayerRequests').value.trim()
         };
 
-        console.log('📤 Sending text data to Apps Script...');
+        console.log('Sending text data to Apps Script...');
 
         await fetch(SCRIPT_URL, {
           method: 'POST',
@@ -1272,22 +1225,22 @@
 
         loadingDiv.classList.remove('active');
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ' + (currentLang === 'ur' ? 'رجسٹریشن جمع کریں' : 'Submit Registration');
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Registration';
 
         thankYouName.textContent = formData.fullName;
-        displayMonthlyFee.textContent = `PKR ${formData.monthlyFee}/month`;
+        displayMonthlyFee.textContent = 'PKR ' + formData.monthlyFee + '/month';
         displayPaymentMethod.textContent = formData.paymentMethod;
 
         form.classList.add('hidden');
         thankYouDiv.classList.add('active');
 
       } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('Error:', error);
         loadingDiv.classList.remove('active');
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ' + (currentLang === 'ur' ? 'رجسٹریشن جمع کریں' : 'Submit Registration');
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Registration';
 
-        alert(currentLang === 'ur' ? 'کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں یا چرچ آفس سے رابطہ کریں۔' : 'Something went wrong. Please try again or contact the church office.');
+        alert('Something went wrong. Please try again or contact the church office.');
       }
     });
   </script>
