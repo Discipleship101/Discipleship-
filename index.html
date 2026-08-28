@@ -586,6 +586,19 @@
       margin-right: 3px;
     }
 
+    /* FIX: Donation statement alignment */
+    .lang-urdu .donation-statement {
+      direction: rtl !important;
+      text-align: right !important;
+      border-left: none !important;
+      border-right: 6px solid #c9a96e !important;
+    }
+
+    .lang-urdu .donation-statement i {
+      margin-right: 0 !important;
+      margin-left: 10px !important;
+    }
+
     @media (max-width: 600px) {
       .form-body {
         padding: 1.5rem;
@@ -747,45 +760,34 @@
             <label><input type="radio" name="paymentMethod" value="JazzCash"> <span id="optJazzCash">JazzCash</span></label>
           </div>
 
-          <!-- DONATION STATEMENT
-               Placed before the payment/QR area so it is visible in the fees section. -->
-          <div
-            id="donationStatement"
-            role="note"
-            aria-live="polite"
-            style="
-              display: block !important;
-              visibility: visible !important;
-              opacity: 1 !important;
-              width: 100%;
-              min-height: 72px;
-              clear: both;
-              position: relative;
-              z-index: 10;
-              background: #f5f0eb !important;
-              padding: 14px 16px !important;
-              margin: 16px 0 !important;
-              border: 2px solid #c9a96e !important;
-              border-left: 6px solid #c9a96e !important;
-              border-radius: 8px;
-              color: #1a4a2a !important;
-              font-family: 'Inter', sans-serif !important;
-              font-size: 14px !important;
-              line-height: 1.6 !important;
-              text-align: left !important;
-            "
-          >
-            <span
-              aria-hidden="true"
-              style="color: #c9a96e; font-size: 1.1rem; margin-right: 10px;"
-            >♥</span>
-            <span
-              id="donationText"
-              style="color: #1a4a2a !important; display: inline !important;"
-            >
+          <!-- DONATION STATEMENT -->
+          <div class="donation-statement" id="donationStatement" style="
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            background: #f5f0eb !important;
+            padding: 14px 16px !important;
+            margin: 16px 0 !important;
+            border: 2px solid #c9a96e !important;
+            border-left: 6px solid #c9a96e !important;
+            border-radius: 8px;
+            color: #1a4a2a !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+            text-align: left !important;
+            width: 100% !important;
+            min-height: 72px !important;
+            clear: both !important;
+            position: relative !important;
+            z-index: 999 !important;
+          ">
+            <span style="color: #c9a96e; font-size: 1.1rem; margin-right: 10px;">♥</span>
+            <span id="donationText" style="color: #1a4a2a !important; display: inline !important;">
               If you feel led to support this vision, we welcome your voluntary financial contributions to help advance and strengthen this ministry.
             </span>
           </div>
+          <!-- END DONATION STATEMENT -->
 
           <div class="payment-number-display">
             <strong id="paymentLabel">Easypaisa / JazzCash Number:</strong> <span>0301-5661600</span>
@@ -943,6 +945,7 @@
           optJazzCash: 'JazzCash',
           paymentLabel: 'Easypaisa / JazzCash Number:',
           paymentDetailsNote: 'Please send the fee to the above number and share the screenshot with us.',
+          donationText: 'If you feel led to support this vision, we welcome your voluntary financial contributions to help advance and strengthen this ministry.',
           secSpiritual: 'Your Spiritual Journey',
           lblWhyDisciple: '17. Why do you want to become a disciple?',
           lblGifts: '18. Your spiritual gifts',
@@ -996,6 +999,7 @@
           optJazzCash: 'جاز کیش',
           paymentLabel: 'ایزی پیزا / جاز کیش نمبر:',
           paymentDetailsNote: 'براہ کرم فیس مذکورہ نمبر پر بھیجیں اور اسکرین شاٹ ہمیں شیئر کریں۔',
+          donationText: 'اگر آپ اس خدمت میں مالی تعاون کرنا چاہتے ہیں تو ہم آپ کا خیر مقدم کرتے ہیں۔',
           secSpiritual: 'آپ کا روحانی سفر',
           lblWhyDisciple: '17. آپ شاگرد کیوں بننا چاہتے ہیں؟',
           lblGifts: '18. آپ کی روحانی نعمت',
@@ -1068,6 +1072,9 @@
       document.getElementById('optJazzCash').textContent = t.optJazzCash;
       document.getElementById('paymentLabel').textContent = t.paymentLabel;
       document.getElementById('paymentDetailsNote').textContent = t.paymentDetailsNote;
+
+      // DONATION TEXT - Update the donation statement text
+      document.getElementById('donationText').textContent = t.donationText;
 
       // Spiritual Journey
       document.getElementById('secSpiritual').textContent = t.secSpiritual;
