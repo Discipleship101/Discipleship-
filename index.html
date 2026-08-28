@@ -639,6 +639,11 @@
       margin-left: 10px !important;
     }
 
+    /* QR Code - RTL support */
+    .lang-urdu .qr-code-container {
+      direction: rtl !important;
+    }
+
     @media (max-width: 600px) {
       .form-body {
         padding: 1.5rem;
@@ -681,6 +686,15 @@
 
       .footer .social-links a {
         font-size: 1.2rem;
+      }
+
+      /* Mobile: Stack QR code below */
+      .two-column-layout {
+        flex-direction: column !important;
+      }
+      .qr-code-container {
+        width: 100% !important;
+        min-width: unset !important;
       }
     }
   </style>
@@ -788,19 +802,56 @@
           </p>
           <input type="hidden" id="registrationFee" value="1000">
 
-          <label class="fee-label" id="lblMonthlyFee">15. Monthly Fee Selection <span class="required">*</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="monthlyFee" value="500" required> <span id="opt500">PKR 500/month</span></label>
-            <label><input type="radio" name="monthlyFee" value="1000"> <span id="opt1000">PKR 1,000/month</span></label>
-          </div>
+          <!-- TWO COLUMN LAYOUT: Left side (Monthly Fee + Payment) | Right side (QR Code) -->
+          <div class="two-column-layout" style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+            
+            <!-- LEFT COLUMN -->
+            <div style="flex: 1; min-width: 200px;">
+              <label class="fee-label" id="lblMonthlyFee">15. Monthly Fee Selection <span class="required">*</span></label>
+              <div class="radio-group">
+                <label><input type="radio" name="monthlyFee" value="500" required> <span id="opt500">PKR 500/month</span></label>
+                <label><input type="radio" name="monthlyFee" value="1000"> <span id="opt1000">PKR 1,000/month</span></label>
+              </div>
 
-          <label class="fee-label" style="margin-top: 1rem;" id="lblPaymentMethod">16. Payment Method <span class="required">*</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="paymentMethod" value="Easypaisa" required> <span id="optEasypaisa">Easypaisa</span></label>
-            <label><input type="radio" name="paymentMethod" value="JazzCash"> <span id="optJazzCash">JazzCash</span></label>
-          </div>
+              <label class="fee-label" style="margin-top: 1rem;" id="lblPaymentMethod">16. Payment Method <span class="required">*</span></label>
+              <div class="radio-group">
+                <label><input type="radio" name="paymentMethod" value="Easypaisa" required> <span id="optEasypaisa">Easypaisa</span></label>
+                <label><input type="radio" name="paymentMethod" value="JazzCash"> <span id="optJazzCash">JazzCash</span></label>
+              </div>
+            </div>
+            <!-- END LEFT COLUMN -->
 
-          <!-- DONATION STATEMENT -->
+            <!-- RIGHT COLUMN - QR CODE -->
+            <div class="qr-code-container" style="
+              flex: 0 0 auto;
+              text-align: center;
+              padding: 12px 20px;
+              background: #ffffff;
+              border-radius: 12px;
+              border: 2px solid #e0e8e0;
+              min-width: 150px;
+            ">
+              <p style="color: #1a4a2a; font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; letter-spacing: 0.5px;">
+                <span id="qrLabel">Scan the QR Code</span>
+              </p>
+              <img src="qr-code.png" alt="QR Code" style="
+                max-width: 120px;
+                width: 100%;
+                height: auto;
+                border-radius: 6px;
+                display: block;
+                margin: 0 auto;
+              ">
+              <p style="color: #c9a96e; font-weight: 700; font-size: 0.9rem; margin-top: 8px;">
+                <span id="qrNumber">0301-5661600</span>
+              </p>
+            </div>
+            <!-- END RIGHT COLUMN - QR CODE -->
+
+          </div>
+          <!-- END TWO COLUMN LAYOUT -->
+
+          <!-- DONATION STATEMENT - Full width -->
           <div class="donation-statement" id="donationStatement">
             <span class="donation-icon">♥</span>
             <span class="donation-text" id="donationText">
@@ -934,17 +985,203 @@
 
       var translations = {
         en: {
-          donationText: 'If you feel led to support this vision, we welcome your voluntary financial contributions to help advance and strengthen this ministry.'
+          headerTitle: 'FROM MEMBERSHIP TO DISCIPLESHIP',
+          headerSubtitle: 'LIVING BRANCH CHURCH FOUNDATION',
+          headerVerse: 'Go and make disciples of all nations — Matthew 28:19',
+          secPersonal: 'Personal Information',
+          lblFullName: '1. Full Name',
+          lblFatherName: "2. Father's Name",
+          lblDOB: '3. Date of Birth',
+          lblAddress: '4. Address',
+          lblCity: 'City',
+          lblCountry: 'Country',
+          lblEducation: '5. Education',
+          lblMobile: '6. Mobile Number',
+          lblWhatsApp: '7. WhatsApp Number',
+          lblEmail: '8. Email Address',
+          secChurch: 'Church Information',
+          lblChurchName: '9. Your Church Name',
+          lblRole: '10. Your Responsibilities in the Church',
+          lblChurchAddress: '11. Your Church Address',
+          lblPastor: "12. Your Pastor's Name",
+          lblPastorContact: "13. Your Pastor's Contact Number",
+          secFees: 'Registration & Fees',
+          lblRegFee: '14. Registration Fee (one time)',
+          regFeeNote: '(one-time admission fee)',
+          lblMonthlyFee: '15. Monthly Fee Selection',
+          opt500: 'PKR 500/month',
+          opt1000: 'PKR 1,000/month',
+          lblPaymentMethod: '16. Payment Method',
+          optEasypaisa: 'Easypaisa',
+          optJazzCash: 'JazzCash',
+          paymentLabel: 'Easypaisa / JazzCash Number:',
+          paymentDetailsNote: 'Please send the fee to the above number and share the screenshot with us.',
+          donationText: 'If you feel led to support this vision, we welcome your voluntary financial contributions to help advance and strengthen this ministry.',
+          qrLabel: 'Scan the QR Code',
+          qrNumber: '0301-5661600',
+          secSpiritual: 'Your Spiritual Journey',
+          lblWhyDisciple: '17. Why do you want to become a disciple?',
+          lblGifts: '18. Your spiritual gifts',
+          lblPrayer: '19. Prayer requests or special needs',
+          secUploads: 'Document Upload',
+          fileStatusText: 'Please upload your documents using the button below.',
+          uploadBtnText: 'Upload Documents (CNIC + Photo)',
+          uploadNote: 'After uploading, please close the tab and return to this page to submit.',
+          uploadSuccessText: 'Documents uploaded successfully! Please submit the form below.',
+          loadingText: 'Submitting your registration...',
+          submitText: 'Submit Registration',
+          thankTitle: 'Registration Complete! 🎉',
+          thankYouPrefix: 'Thank you,',
+          thankYouMessage: 'Your registration has been successfully saved.',
+          summaryRegFee: 'Registration Fee:',
+          summaryRegFeeNote: '(one-time)',
+          summaryMonthlyFee: 'Monthly Fee:',
+          summaryPaymentMethod: 'Payment Method:',
+          footerTagline: '"Making disciples who make disciples"',
+          thankYouUploadReminder: 'Don\'t forget to upload your documents using the button above!'
         },
         ur: {
-          donationText: 'اگر آپ اس خدمت میں مالی تعاون کرنا چاہتے ہیں تو ہم آپ کا خیر مقدم کرتے ہیں۔'
+          headerTitle: 'رکنیت سے شاگردیت تک',
+          headerSubtitle: 'لیونگ برانچ چرچ فاؤنڈیشن',
+          headerVerse: 'جاؤ اور تمام قوموں کو شاگرد بناؤ — متی 28:19',
+          secPersonal: 'ذاتی معلومات',
+          lblFullName: '1. پورا نام',
+          lblFatherName: '2. والد کا نام',
+          lblDOB: '3. تاریخ پیدائش',
+          lblAddress: '4. پتہ',
+          lblCity: 'شہر',
+          lblCountry: 'ملک',
+          lblEducation: '5. تعلیم',
+          lblMobile: '6. موبائل نمبر',
+          lblWhatsApp: '7. واٹس ایپ نمبر',
+          lblEmail: '8. ای میل ایڈریس',
+          secChurch: 'چرچ کی معلومات',
+          lblChurchName: '9. آپ کے چرچ کا نام',
+          lblRole: '10. چرچ میں آپ کی ذمہ داریاں',
+          lblChurchAddress: '11. آپ کے چرچ کا پتہ',
+          lblPastor: '12. آپ کے پادری صاحب کا نام',
+          lblPastorContact: '13. آپ کے پادری کا رابطہ نمبر',
+          secFees: 'رجسٹریشن اور فیس',
+          lblRegFee: '14. رجسٹریشن فیس (ایک بار)',
+          regFeeNote: '(ایک بار کی داخلہ فیس)',
+          lblMonthlyFee: '15. ماہانہ فیس کا انتخاب',
+          opt500: 'پی کے آر 500/ماہ',
+          opt1000: 'پی کے آر 1000/ماہ',
+          lblPaymentMethod: '16. ادائیگی کا طریقہ',
+          optEasypaisa: 'ایزی پیزا',
+          optJazzCash: 'جاز کیش',
+          paymentLabel: 'ایزی پیزا / جاز کیش نمبر:',
+          paymentDetailsNote: 'براہ کرم فیس مذکورہ نمبر پر بھیجیں اور اسکرین شاٹ ہمیں شیئر کریں۔',
+          donationText: 'اگر آپ اس خدمت میں مالی تعاون کرنا چاہتے ہیں تو ہم آپ کا خیر مقدم کرتے ہیں۔',
+          qrLabel: 'QR کوڈ اسکین کریں',
+          qrNumber: '0301-5661600',
+          secSpiritual: 'آپ کا روحانی سفر',
+          lblWhyDisciple: '17. آپ شاگرد کیوں بننا چاہتے ہیں؟',
+          lblGifts: '18. آپ کی روحانی نعمت',
+          lblPrayer: '19. دعائیہ درخواست یا خصوصی ضرورت برائے داخلہ',
+          secUploads: 'دستاویزات اپ لوڈ کریں',
+          fileStatusText: 'براہ کرم نیچے دیے گئے بٹن کا استعمال کرکے اپنی دستاویزات اپ لوڈ کریں۔',
+          uploadBtnText: 'دستاویزات اپ لوڈ کریں (شناختی کارڈ + تصویر)',
+          uploadNote: 'اپ لوڈ کرنے کے بعد، براہ کرم ٹیب بند کریں اور جمع کرانے کے لیے اس صفحہ پر واپس آئیں۔',
+          uploadSuccessText: 'دستاویزات کامیابی سے اپ لوڈ ہو گئیں! براہ کرم نیچے دیا گیا فارم جمع کریں۔',
+          loadingText: 'آپ کی رجسٹریشن جمع کرائی جا رہی ہے...',
+          submitText: 'رجسٹریشن جمع کریں',
+          thankTitle: 'رجسٹریشن مکمل! 🎉',
+          thankYouPrefix: 'شکریہ،',
+          thankYouMessage: 'آپ کی رجسٹریشن کامیابی سے محفوظ ہو گئی ہے۔',
+          summaryRegFee: 'رجسٹریشن فیس:',
+          summaryRegFeeNote: '(ایک بار)',
+          summaryMonthlyFee: 'ماہانہ فیس:',
+          summaryPaymentMethod: 'ادائیگی کا طریقہ:',
+          footerTagline: '"شاگرد بنانا جو شاگرد بنائیں"',
+          thankYouUploadReminder: 'اپنی دستاویزات کو اوپر دیے گئے بٹن کا استعمال کرکے اپ لوڈ کرنا نہ بھولیں!'
         }
       };
 
       var t = translations[isUrdu ? 'ur' : 'en'];
 
-      // Update donation text
+      // Update header
+      if (isUrdu) {
+        document.getElementById('headerTitle').innerHTML = t.headerTitle;
+      } else {
+        document.getElementById('headerTitle').innerHTML = `
+          <span class="highlight">FROM MEMBERSHIP</span>
+          <span class="to-text">TO</span>
+          <span class="discipleship-text">DISCIPLESHIP</span>
+        `;
+      }
+
+      document.getElementById('foundationName').textContent = t.headerSubtitle;
+      document.getElementById('headerVerse').textContent = t.headerVerse;
+
+      // Personal Information
+      document.getElementById('secPersonal').textContent = t.secPersonal;
+      document.getElementById('lblFullName').innerHTML = t.lblFullName + ' <span class="required">*</span>';
+      document.getElementById('lblFatherName').innerHTML = t.lblFatherName + ' <span class="required">*</span>';
+      document.getElementById('lblDOB').innerHTML = t.lblDOB + ' <span class="required">*</span>';
+      document.getElementById('lblAddress').innerHTML = t.lblAddress + ' <span class="required">*</span>';
+      document.getElementById('lblCity').innerHTML = t.lblCity + ' <span class="required">*</span>';
+      document.getElementById('lblCountry').innerHTML = t.lblCountry + ' <span class="required">*</span>';
+      document.getElementById('lblEducation').textContent = t.lblEducation;
+      document.getElementById('lblMobile').innerHTML = t.lblMobile + ' <span class="required">*</span>';
+      document.getElementById('lblWhatsApp').innerHTML = t.lblWhatsApp + ' <span class="required">*</span>';
+      document.getElementById('lblEmail').innerHTML = t.lblEmail + ' <span class="required">*</span>';
+
+      // Church Information
+      document.getElementById('secChurch').textContent = t.secChurch;
+      document.getElementById('lblChurchName').innerHTML = t.lblChurchName + ' <span class="required">*</span>';
+      document.getElementById('lblRole').textContent = t.lblRole;
+      document.getElementById('lblChurchAddress').innerHTML = t.lblChurchAddress + ' <span class="required">*</span>';
+      document.getElementById('lblPastor').innerHTML = t.lblPastor + ' <span class="required">*</span>';
+      document.getElementById('lblPastorContact').innerHTML = t.lblPastorContact + ' <span class="required">*</span>';
+
+      // Fees
+      document.getElementById('secFees').textContent = t.secFees;
+      document.getElementById('lblRegFee').innerHTML = t.lblRegFee + ' <span class="required">*</span>';
+      document.getElementById('regFeeNote').textContent = t.regFeeNote;
+      document.getElementById('lblMonthlyFee').innerHTML = t.lblMonthlyFee + ' <span class="required">*</span>';
+      document.getElementById('opt500').textContent = t.opt500;
+      document.getElementById('opt1000').textContent = t.opt1000;
+      document.getElementById('lblPaymentMethod').innerHTML = t.lblPaymentMethod + ' <span class="required">*</span>';
+      document.getElementById('optEasypaisa').textContent = t.optEasypaisa;
+      document.getElementById('optJazzCash').textContent = t.optJazzCash;
+      document.getElementById('paymentLabel').textContent = t.paymentLabel;
+      document.getElementById('paymentDetailsNote').textContent = t.paymentDetailsNote;
+
+      // DONATION TEXT - Update the donation statement text
       document.getElementById('donationText').textContent = t.donationText;
+
+      // QR CODE - Update QR text
+      document.getElementById('qrLabel').textContent = t.qrLabel;
+      document.getElementById('qrNumber').textContent = t.qrNumber;
+
+      // Spiritual Journey
+      document.getElementById('secSpiritual').textContent = t.secSpiritual;
+      document.getElementById('lblWhyDisciple').textContent = t.lblWhyDisciple;
+      document.getElementById('lblGifts').textContent = t.lblGifts;
+      document.getElementById('lblPrayer').textContent = t.lblPrayer;
+
+      // Uploads
+      document.getElementById('secUploads').textContent = t.secUploads;
+      document.getElementById('fileStatusText').textContent = t.fileStatusText;
+      document.getElementById('uploadBtnText').textContent = t.uploadBtnText;
+      document.getElementById('uploadNote').textContent = t.uploadNote;
+      document.getElementById('uploadSuccessText').textContent = t.uploadSuccessText;
+
+      // Submit & Loading
+      document.getElementById('loadingText').textContent = t.loadingText;
+      document.getElementById('submitText').textContent = t.submitText;
+
+      // Thank You
+      document.getElementById('thankTitle').textContent = t.thankTitle;
+      document.getElementById('thankYouPrefix').innerHTML = t.thankYouPrefix + ' <span id="thankYouName"></span>!';
+      document.getElementById('thankYouMessage').textContent = t.thankYouMessage;
+      document.getElementById('summaryRegFee').innerHTML = t.summaryRegFee + ' <span>PKR 1,000</span>';
+      document.getElementById('summaryRegFeeNote').textContent = t.summaryRegFeeNote;
+      document.getElementById('summaryMonthlyFee').innerHTML = t.summaryMonthlyFee + ' <span id="displayMonthlyFee"></span>';
+      document.getElementById('summaryPaymentMethod').innerHTML = t.summaryPaymentMethod + ' <span id="displayPaymentMethod"></span>';
+      document.getElementById('footerTagline').textContent = t.footerTagline;
+      document.getElementById('thankYouUploadReminder').textContent = t.thankYouUploadReminder;
     }
 
     // UPLOAD BUTTON
