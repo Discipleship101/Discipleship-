@@ -550,12 +550,67 @@
       color: #155724;
     }
 
+    /* DONATION STATEMENT - FIXED FOR RTL */
+    .donation-statement {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f5f0eb !important;
+      padding: 14px 16px !important;
+      margin: 16px 0 !important;
+      border: 2px solid #c9a96e !important;
+      border-left: 6px solid #c9a96e !important;
+      border-radius: 8px;
+      color: #1a4a2a !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 14px !important;
+      line-height: 1.6 !important;
+      text-align: left !important;
+      width: 100% !important;
+      min-height: 60px !important;
+      clear: both !important;
+      position: relative !important;
+      z-index: 999 !important;
+    }
+
+    .donation-statement .donation-icon {
+      color: #c9a96e;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .donation-statement .donation-text {
+      color: #1a4a2a !important;
+      display: inline !important;
+    }
+
+    /* Urdu mode - override alignment and border */
+    .lang-urdu .donation-statement {
+      direction: rtl !important;
+      text-align: right !important;
+      border-left: 2px solid #c9a96e !important;
+      border-right: 6px solid #c9a96e !important;
+      font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', sans-serif !important;
+    }
+
+    .lang-urdu .donation-statement .donation-icon {
+      margin-right: 0 !important;
+      margin-left: 10px !important;
+    }
+
+    /* Language toggle for Urdu */
     .lang-urdu label,
     .lang-urdu .section-title,
     .lang-urdu .fee-label,
     .lang-urdu .submit-btn,
     .lang-urdu .fee-section p,
-    .lang-urdu .file-status {
+    .lang-urdu .file-status,
+    .lang-urdu .donation-statement,
+    .lang-urdu .payment-number-display,
+    .lang-urdu .upload-note {
       font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', sans-serif !important;
       direction: rtl !important;
       text-align: right !important;
@@ -588,62 +643,12 @@
       margin-right: 3px;
     }
 
-    /* DONATION STATEMENT - FIXED FOR RTL */
-    .donation-statement {
-      display: flex !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      align-items: flex-start;
-      gap: 10px;
-      background: #f5f0eb !important;
-      padding: 14px 16px !important;
-      margin: 16px 0 !important;
-      border: 2px solid #c9a96e !important;
-      border-left: 6px solid #c9a96e !important;
-      border-radius: 8px;
-      color: #1a4a2a !important;
-      font-family: 'Inter', sans-serif !important;
-      font-size: 14px !important;
-      line-height: 1.6 !important;
-      text-align: left !important;
-      width: 100% !important;
-      min-height: 72px !important;
-      clear: both !important;
-      position: relative !important;
-      z-index: 999 !important;
-    }
-
-    .donation-statement .donation-icon {
-      color: #c9a96e;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .donation-statement .donation-text {
-      color: #1a4a2a !important;
-      display: inline !important;
-    }
-
-    /* Urdu mode - override alignment and border */
-    .lang-urdu .donation-statement {
-      direction: rtl !important;
-      text-align: right !important;
-      border-left: 2px solid #c9a96e !important;
-      border-right: 6px solid #c9a96e !important;
-      font-family: 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', sans-serif !important;
-    }
-
-    .lang-urdu .donation-statement .donation-icon {
-      margin-right: 0 !important;
-      margin-left: 10px !important;
-    }
-
     /* QR Code - RTL support */
     .lang-urdu .qr-code-container {
       direction: rtl !important;
     }
 
+    /* Mobile responsiveness */
     @media (max-width: 600px) {
       .form-body {
         padding: 1.5rem;
@@ -688,10 +693,10 @@
         font-size: 1.2rem;
       }
 
-      /* Mobile: Stack QR code below */
       .two-column-layout {
         flex-direction: column !important;
       }
+
       .qr-code-container {
         width: 100% !important;
         min-width: unset !important;
@@ -841,6 +846,7 @@
                 border-radius: 6px;
                 display: block;
                 margin: 0 auto;
+                border: 1px solid #e0e8e0;
               ">
               <p style="color: #c9a96e; font-weight: 700; font-size: 0.9rem; margin-top: 8px;">
                 <span id="qrNumber">0301-5661600</span>
