@@ -403,10 +403,82 @@
       box-shadow: 0 4px 16px rgba(88, 166, 255, 0.3);
     }
 
+    .photo-fallback {
+      width: 50px;
+      height: 50px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      color: #8b949e;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .photo-fallback:hover {
+      border-color: #58a6ff;
+      background: rgba(88, 166, 255, 0.12);
+      transform: scale(1.1);
+    }
+
     .no-image {
       color: #484f58;
       font-size: 0.7rem;
       opacity: 0.5;
+    }
+
+    .photo-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(5px);
+    }
+
+    .photo-lightbox.open {
+      display: flex;
+    }
+
+    .photo-lightbox img {
+      max-width: 92vw;
+      max-height: 88vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 12px 50px rgba(0,0,0,0.6);
+    }
+
+    .photo-lightbox .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.3rem;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 1.7rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .photo-lightbox .lightbox-close:hover {
+      background: #f85149;
+      border-color: #f85149;
+    }
+
+    .photo-lightbox .lightbox-hint {
+      position: absolute;
+      bottom: 1rem;
+      color: #c9d1d9;
+      font-size: 0.75rem;
+      opacity: 0.75;
     }
 
     .pagination {
@@ -505,6 +577,33 @@
       <table><thead><tr><th>#</th><th>Date</th><th>Name</th><th>WhatsApp</th><th>City</th><th>Fee</th><th>Payment</th><th>Photo</th></tr></thead><tbody id="tableBody"></tbody></table>
       <div class="pagination" id="pagination"></div>
     </div>
+  </div>
+</div>
+
+<!-- FULL-SIZE PHOTO VIEWER -->
+<div
+  id="photoLightbox"
+  class="photo-lightbox"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Full-size photo viewer"
+  onclick="closePhotoLightbox(event)"
+>
+  <button
+    type="button"
+    class="lightbox-close"
+    aria-label="Close photo"
+    onclick="closePhotoLightbox()"
+  >&times;</button>
+
+  <img
+    id="lightboxImage"
+    alt="Full-size registration photo"
+    onclick="event.stopPropagation()"
+  />
+
+  <div class="lightbox-hint">
+    Click outside the photo or press Escape to close
   </div>
 </div>
 
@@ -641,11 +740,11 @@
       const photoUrl = (r.photo || r.Photo || r.photoUrl || r.image || '').toString().trim() || null;
       
       if (photoUrl && photoUrl.trim() !== '' && photoUrl !== 'N/A') {
-        imgHtml = `<img src="${photoUrl}" class="img-thumb" loading="lazy" 
+        imgHtml = `<img src="${photoUrl}" class="img-thumb photo-preview"
+                     data-photo-url="${photoUrl}"
+                     loading="lazy"
                      referrerpolicy="no-referrer"
-                     onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'no-image\\'>📷</span>'" 
-                     alt="Photo" 
-                     onclick="window.open('${photoUrl}', '_blank')" 
+                     alt="Photo"
                      title="Click to view full image" />`;
       }
       
@@ -666,8 +765,76 @@
     });
     
     tbody.innerHTML = html;
+
+    // Open a photo in the full-size viewer when its thumbnail is clicked.
+    // If the thumbnail cannot load, keep the camera icon clickable so the
+    // viewer can still try the original Drive URL.
+    tbody.querySelectorAll('.photo-preview').forEach(function(image) {
+      image.addEventListener('click', function() {
+        openPhotoLightbox(image.dataset.photoUrl);
+      });
+
+      image.addEventListener('error', function() {
+        const fallback = document.createElement('button');
+        fallback.type = 'button';
+        fallback.className = 'photo-fallback';
+        fallback.textContent = '📷';
+        fallback.title = 'Photo could not load. Click to try opening it.';
+
+        fallback.addEventListener('click', function() {
+          openPhotoLightbox(image.dataset.photoUrl);
+        });
+
+        image.replaceWith(fallback);
+      });
+    });
+
     updatePagination();
   }
+
+  function openPhotoLightbox(photoUrl) {
+    if (!photoUrl) return;
+
+    const lightbox =
+      document.getElementById('photoLightbox');
+
+    const image =
+      document.getElementById('lightboxImage');
+
+    image.src = photoUrl;
+    image.alt = 'Full-size registration photo';
+    image.style.display = 'block';
+
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePhotoLightbox(event) {
+    if (
+      event &&
+      event.target &&
+      event.target.id !== 'photoLightbox' &&
+      event.target.className !== 'lightbox-close'
+    ) {
+      return;
+    }
+
+    const lightbox =
+      document.getElementById('photoLightbox');
+
+    const image =
+      document.getElementById('lightboxImage');
+
+    lightbox.classList.remove('open');
+    image.removeAttribute('src');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closePhotoLightbox();
+    }
+  });
 
   function updatePagination() {
     const total = Math.ceil(filteredData.length / pageSize);
@@ -750,7 +917,7 @@
     btn.disabled = true;
 
     // ⚠️ REPLACE WITH YOUR DEPLOYED APPS SCRIPT URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOuWRTcYWDsdRho3Ui806tRbYnn2NQqF7BrXJnaXfUBIPD5opPSoauFVKIfuUOtixRTQ/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyn_DhVE10M3TtyHNGWl9uaLdCvwtyMMHfS1LEHyAaI6hnrxGpaTLK3jyv1H_X-hXpKNQ/exec';
 
     // Create a unique callback name
     const callbackName = 'jsonpCallback_' + Date.now();
