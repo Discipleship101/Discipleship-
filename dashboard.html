@@ -638,10 +638,11 @@
       }
       
       let imgHtml = '<span class="no-image">—</span>';
-      const photoUrl = r.photo || null;
+      const photoUrl = (r.photo || r.Photo || r.photoUrl || r.image || '').toString().trim() || null;
       
       if (photoUrl && photoUrl.trim() !== '' && photoUrl !== 'N/A') {
         imgHtml = `<img src="${photoUrl}" class="img-thumb" loading="lazy" 
+                     referrerpolicy="no-referrer"
                      onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'no-image\\'>📷</span>'" 
                      alt="Photo" 
                      onclick="window.open('${photoUrl}', '_blank')" 
@@ -749,7 +750,7 @@
     btn.disabled = true;
 
     // ⚠️ REPLACE WITH YOUR DEPLOYED APPS SCRIPT URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzR3VJMQqqpWU77trodvFyJKyFiAQUWco-c7psGVEUVqUZmHDwfoMDUAFFv2fMot8DBCQ/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOuWRTcYWDsdRho3Ui806tRbYnn2NQqF7BrXJnaXfUBIPD5opPSoauFVKIfuUOtixRTQ/exec';
 
     // Create a unique callback name
     const callbackName = 'jsonpCallback_' + Date.now();
