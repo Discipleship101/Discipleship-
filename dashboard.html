@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discipleship · Colorful Dashboard</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+
+    .dashboard {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* ---- Header ---- */
+    .dash-header {
+      background: linear-gradient(135deg, #161b22, #1c2333);
+      padding: 1.2rem 2rem;
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .dash-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .dash-brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #58a6ff;
+    }
+
+    .dash-brand h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #f0e6d3, #58a6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .dash-brand small {
+      display: block;
+      color: #8b949e;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      font-weight: 300;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.7rem;
+    }
+
+    .header-actions button {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #c9d1d9;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-actions button:hover {
+      background: #58a6ff;
+      border-color: #58a6ff;
+      color: #0d1117;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(88, 166, 255, 0.25);
+    }
+
+    /* ---- Stats Grid (Colorful) ---- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(145deg, #161b22, #1c2333);
+      padding: 1.2rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #58a6ff, #3fb950, #d29922, #f85149);
+      opacity: 0.8;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(88, 166, 255, 0.15);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .stat-card .label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8b949e;
+      font-weight: 600;
+    }
+
+    .stat-card .value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #f0f6fc;
+      margin: 0.2rem 0 0.05rem;
+      letter-spacing: -0.5px;
+    }
+
+    .stat-card .sub {
+      font-size: 0.7rem;
+      color: #484f58;
+    }
+
+    .stat-card .icon {
+      float: right;
+      font-size: 1.8rem;
+      color: rgba(255,255,255,0.03);
+      margin-top: -0.2rem;
+    }
+
+    /* Color-specific stat cards */
+    .stat-card.purple .value { color: #bc8cff; }
+    .stat-card.blue .value { color: #58a6ff; }
+    .stat-card.green .value { color: #3fb950; }
+    .stat-card.gold .value { color: #d29922; }
+    .stat-card.red .value { color: #f85149; }
+    .stat-card.cyan .value { color: #79c0ff; }
+
+    /* ---- Filters ---- */
+    .filters-bar {
+      background: #161b22;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filters-bar .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .filters-bar label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #58a6ff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .filters-bar input,
+    .filters-bar select {
+      padding: 0.35rem 0.8rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      background: #0d1117;
+      color: #c9d1d9;
+      transition: all 0.25s;
+      min-width: 120px;
+    }
+
+    .filters-bar input:focus,
+    .filters-bar select:focus {
+      border-color: #58a6ff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+    }
+
+    .filters-bar input[type="date"] {
+      color-scheme: dark;
+    }
+
+    .filters-bar .clear-btn {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #8b949e;
+      padding: 0.35rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.7rem;
+      transition: all 0.25s;
+    }
+
+    .filters-bar .clear-btn:hover {
+      background: #f85149;
+      color: #0d1117;
+      border-color: #f85149;
+    }
+
+    /* ---- Charts Grid ---- */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-card {
+      background: #161b22;
+      padding: 1.2rem 1rem 0.8rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: all 0.3s;
+    }
+
+    .chart-card:hover {
+      border-color: rgba(88, 166, 255, 0.1);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .chart-card h3 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #8b949e;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chart-card h3 i {
+      color: #58a6ff;
+      font-size: 0.9rem;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 200px;
+    }
+
+    /* ---- Table ---- */
+    .table-section {
+      background: #161b22;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.04);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .table-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .table-header h3 {
+      color: #c9d1d9;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .table-header h3 i {
+      color: #58a6ff;
+      margin-right: 6px;
+    }
+
+    .table-header select {
+      padding: 0.25rem 0.8rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 6px;
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      padding: 0 1.5rem 1.2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      min-width: 750px;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.6rem 0.5rem;
+      color: #8b949e;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 0.6rem 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      vertical-align: middle;
+      color: #c9d1d9;
+    }
+
+    tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.7rem;
+      border-radius: 12px;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    .badge-easypaisa {
+      background: rgba(63, 185, 80, 0.15);
+      color: #3fb950;
+      border: 1px solid rgba(63, 185, 80, 0.1);
+    }
+
+    .badge-jazzcash {
+      background: rgba(210, 153, 34, 0.15);
+      color: #d29922;
+      border: 1px solid rgba(210, 153, 34, 0.1);
+    }
+
+    .badge-500 {
+      background: rgba(88, 166, 255, 0.12);
+      color: #58a6ff;
+      border: 1px solid rgba(88, 166, 255, 0.08);
+    }
+
+    .badge-1000 {
+      background: rgba(248, 81, 73, 0.12);
+      color: #f85149;
+      border: 1px solid rgba(248, 81, 73, 0.08);
+    }
+
+    .img-thumb {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.04);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .img-thumb:hover {
+      transform: scale(1.1);
+      border-color: #58a6ff;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 0.5rem 0 0.1rem;
+    }
+
+    .pagination button {
+      padding: 0.2rem 0.7rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 6px;
+      background: transparent;
+      color: #8b949e;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .pagination button.active {
+      background: #58a6ff;
+      border-color: #58a6ff;
+      color: #0d1117;
+      font-weight: 700;
+    }
+
+    .pagination button:hover:not(.active) {
+      border-color: rgba(88, 166, 255, 0.2);
+      color: #c9d1d9;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 700px) {
+      body { padding: 1rem; }
+      .dash-header { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .filters-bar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="dash-header">
+    <div class="dash-brand">
+      <img src="logo.jpeg" alt="Living Branch" onerror="this.src='https://via.placeholder.com/48/161b22/58a6ff?text=LB'" />
+      <div>
+        <h1>Discipleship · Color</h1>
+        <small>LIVING BRANCH CHURCH · ADMIN</small>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button onclick="exportCSV()"><i class="fas fa-download"></i> CSV</button>
+      <button onclick="refreshData()"><i class="fas fa-sync-alt"></i> Sync</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card purple"><i class="fas fa-users icon"></i><div class="label">Total</div><div class="value" id="totalReg">0</div><div class="sub">all time</div></div>
+    <div class="stat-card blue"><i class="fas fa-calendar-week icon"></i><div class="label">This month</div><div class="value" id="monthlyReg">0</div><div class="sub">last 30 days</div></div>
+    <div class="stat-card green"><i class="fas fa-city icon"></i><div class="label">Cities</div><div class="value" id="cityCount">0</div><div class="sub">unique</div></div>
+    <div class="stat-card gold"><i class="fas fa-coins icon"></i><div class="label">Avg. fee</div><div class="value" id="avgFee">PKR 0</div><div class="sub">per registrant</div></div>
+    <div class="stat-card red"><i class="fas fa-church icon"></i><div class="label">Churches</div><div class="value" id="churchCount">0</div><div class="sub">unique</div></div>
+    <div class="stat-card cyan"><i class="fas fa-percent icon"></i><div class="label">Growth</div><div class="value" id="growthRate">0%</div><div class="sub">vs last month</div></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters-bar">
+    <div class="filter-group"><label>From</label><input type="date" id="dateFrom" /></div>
+    <div class="filter-group"><label>To</label><input type="date" id="dateTo" /></div>
+    <div class="filter-group"><label>City</label><select id="cityFilter"><option value="">All</option></select></div>
+    <div class="filter-group"><label>Payment</label><select id="paymentFilter"><option value="">All</option><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
+    <div class="filter-group"><label>Fee</label><select id="feeFilter"><option value="">All</option><option value="500">PKR 500</option><option value="1000">PKR 1000</option></select></div>
+    <button class="clear-btn" onclick="clearFilters()"><i class="fas fa-times"></i> Clear</button>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts-grid">
+    <div class="chart-card"><h3><i class="fas fa-chart-bar"></i> Registrations by city</h3><div class="chart-container"><canvas id="cityChart"></canvas></div></div>
+    <div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Payment methods</h3><div class="chart-container"><canvas id="paymentChart"></canvas></div></div>
+    <div class="chart-card"><h3><i class="fas fa-chart-line"></i> Monthly trend</h3><div class="chart-container"><canvas id="trendChart"></canvas></div></div>
+    <div class="chart-card"><h3><i class="fas fa-coins"></i> Fee distribution</h3><div class="chart-container"><canvas id="feeChart"></canvas></div></div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-section">
+    <div class="table-header">
+      <h3><i class="fas fa-list"></i> Registrations <span id="recordCount" style="font-weight:400;color:#484f58;font-size:0.7rem;"></span></h3>
+      <select id="pageSize" onchange="changePageSize()"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select>
+    </div>
+    <div class="table-wrapper">
+      <table><thead><tr><th>#</th><th>Date</th><th>Name</th><th>WhatsApp</th><th>City</th><th>Fee</th><th>Payment</th><th>Photo</th></tr></thead><tbody id="tableBody"></tbody></table>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // SAMPLE DATA
+  // ============================================================
+  const SAMPLE_DATA = [
+    { id:1, timestamp:"2026-08-19 12:37:30", name:"Ahmed Ali", whatsapp:"+923335284539", city:"Lahore", fee:500, payment:"Easypaisa", church:"Living Branch", photo:"https://drive.google.com/uc?export=view&id=1JVNwql90lsiiMDP8E8ITznwqtb1GHWTn" },
+    { id:2, timestamp:"2026-08-19 13:03:55", name:"Sara Khan", whatsapp:"03015661600", city:"Karachi", fee:1000, payment:"JazzCash", church:"City Church", photo:"https://drive.google.com/uc?export=view&id=18ky16LlaqqLw71g8CVvVhitVDNst1MiQ" },
+    { id:3, timestamp:"2026-08-19 13:05:57", name:"Usman Siddique", whatsapp:"+923335284539", city:"Islamabad", fee:500, payment:"Easypaisa", church:"Grace Church", photo:"https://drive.google.com/uc?export=view&id=125HKeAxLQXZMhG1_LIXlHTs-OaHvtp1z" },
+    { id:4, timestamp:"2026-08-19 13:34:15", name:"Fatima Noor", whatsapp:"923335284539", city:"Lahore", fee:1000, payment:"Easypaisa", church:"Living Branch", photo:"https://drive.google.com/uc?export=view&id=1TDefXndwpvd4FTqLOGLZ4zbBO9tAESq" },
+    { id:5, timestamp:"2026-08-19 14:03:30", name:"Bilal Ahmed", whatsapp:"923335333270", city:"Karachi", fee:500, payment:"JazzCash", church:"City Church", photo:"https://drive.google.com/uc?export=view&id=1CiBfGksnfzMzV6YDpBuqq44TbukRopFeH" },
+    { id:6, timestamp:"2026-08-19 14:37:14", name:"Ayesha Malik", whatsapp:"923335333270", city:"Islamabad", fee:1000, payment:"Easypaisa", church:"Faith Church", photo:"https://drive.google.com/uc?export=view&id=1ePaTLE_QPWEsDeRYtl02fs2dKcnFBUnie" },
+    { id:7, timestamp:"2026-08-19 16:28:09", name:"Omar Farooq", whatsapp:"923335333270", city:"Peshawar", fee:500, payment:"JazzCash", church:"Hope Church", photo:"https://drive.google.com/uc?export=view&id=1EEzXjylYKGn7DYIJIZCtG9a6DvZiJPZ" },
+    { id:8, timestamp:"2026-08-21 12:10:09", name:"Zara Hussain", whatsapp:"03708040988", city:"Lahore", fee:1000, payment:"Easypaisa", church:"Living Branch", photo:"https://drive.google.com/uc?export=view&id=1Efh74wTDQx5wT035Y9Yqn3Jipzn4ExX7" },
+    { id:9, timestamp:"2026-08-22 09:15:22", name:"Hassan Raza", whatsapp:"923215678901", city:"Rawalpindi", fee:500, payment:"JazzCash", church:"Victory Church", photo:"" },
+    { id:10, timestamp:"2026-08-22 14:30:45", name:"Maryam Shah", whatsapp:"923325678902", city:"Karachi", fee:1000, payment:"Easypaisa", church:"City Church", photo:"" },
+    { id:11, timestamp:"2026-08-23 10:20:33", name:"Imran Ali", whatsapp:"923435678903", city:"Lahore", fee:500, payment:"Easypaisa", church:"Living Branch", photo:"" },
+    { id:12, timestamp:"2026-08-23 16:45:12", name:"Nadia Khan", whatsapp:"923545678904", city:"Islamabad", fee:1000, payment:"JazzCash", church:"Grace Church", photo:"" }
+  ];
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  let allData = [...SAMPLE_DATA];
+  let filteredData = [...allData];
+  let currentPage = 1, pageSize = 25;
+  let cityChart, paymentChart, trendChart, feeChart;
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); }
+  function getMonth(d) { return new Date(d).toLocaleDateString('en-US', { month:'short', year:'numeric' }); }
+
+  // ============================================================
+  // FILTERS
+  // ============================================================
+  function applyFilters() {
+    const from = document.getElementById('dateFrom').value;
+    const to = document.getElementById('dateTo').value;
+    const city = document.getElementById('cityFilter').value;
+    const payment = document.getElementById('paymentFilter').value;
+    const fee = document.getElementById('feeFilter').value;
+
+    filteredData = allData.filter(r => {
+      if (from && r.timestamp < from) return false;
+      if (to && r.timestamp > to + ' 23:59:59') return false;
+      if (city && r.city !== city) return false;
+      if (payment && r.payment !== payment) return false;
+      if (fee && r.fee !== parseInt(fee)) return false;
+      return true;
+    });
+    currentPage = 1;
+    updateDashboard();
+  }
+
+  function clearFilters() {
+    ['dateFrom','dateTo','cityFilter','paymentFilter','feeFilter'].forEach(id => document.getElementById(id).value = '');
+    applyFilters();
+  }
+
+  // ============================================================
+  // UPDATE DASHBOARD
+  // ============================================================
+  function updateDashboard() {
+    updateStats();
+    updateCityFilter();
+    updateTable();
+    updateCharts();
+  }
+
+  function updateStats() {
+    const total = filteredData.length;
+    const monthAgo = new Date(); monthAgo.setDate(monthAgo.getDate()-30);
+    const monthly = filteredData.filter(r => new Date(r.timestamp) >= monthAgo).length;
+    const cities = new Set(filteredData.map(r => r.city)).size;
+    const churches = new Set(filteredData.map(r => r.church)).size;
+    const avg = filteredData.length ? Math.round(filteredData.reduce((s,r) => s + r.fee, 0) / filteredData.length) : 0;
+    
+    // Calculate growth (compare last 30 days with previous 30 days)
+    const twoMonthsAgo = new Date(); twoMonthsAgo.setDate(twoMonthsAgo.getDate()-60);
+    const previousMonth = filteredData.filter(r => {
+      const d = new Date(r.timestamp);
+      return d >= twoMonthsAgo && d < monthAgo;
+    }).length;
+    const growth = previousMonth === 0 ? 100 : Math.round(((monthly - previousMonth) / previousMonth) * 100);
+    
+    document.getElementById('totalReg').textContent = total;
+    document.getElementById('monthlyReg').textContent = monthly;
+    document.getElementById('cityCount').textContent = cities;
+    document.getElementById('avgFee').textContent = `PKR ${avg}`;
+    document.getElementById('churchCount').textContent = churches;
+    document.getElementById('growthRate').textContent = (growth >= 0 ? '+' : '') + growth + '%';
+    document.getElementById('recordCount').textContent = `(${total} records)`;
+  }
+
+  function updateCityFilter() {
+    const cities = [...new Set(allData.map(r => r.city))];
+    const sel = document.getElementById('cityFilter');
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">All</option>';
+    cities.forEach(c => { const opt = document.createElement('option'); opt.value = c; opt.textContent = c; sel.appendChild(opt); });
+    sel.value = cur;
+  }
+
+  // ============================================================
+  // TABLE
+  // ============================================================
+  function updateTable() {
+    const start = (currentPage-1)*pageSize;
+    const pageData = filteredData.slice(start, start+pageSize);
+    const tbody = document.getElementById('tableBody');
+    if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:2rem;color:#484f58;">No data</td></tr>'; updatePagination(); return; }
+
+    let html = '';
+    pageData.forEach((r,i) => {
+      const num = start+i+1;
+      const feeBadge = r.fee === 500 ? 'badge-500' : 'badge-1000';
+      const payBadge = r.payment === 'Easypaisa' ? 'badge-easypaisa' : 'badge-jazzcash';
+      const img = r.photo ? `<img src="${r.photo}" class="img-thumb" loading="lazy" onerror="this.style.display='none'">` : '—';
+      html += `<tr><td>${num}</td><td>${formatDate(r.timestamp)}</td><td><strong>${r.name}</strong></td><td>${r.whatsapp}</td><td>${r.city}</td><td><span class="badge ${feeBadge}">PKR ${r.fee}</span></td><td><span class="badge ${payBadge}">${r.payment}</span></td><td>${img}</td></tr>`;
+    });
+    tbody.innerHTML = html;
+    updatePagination();
+  }
+
+  function updatePagination() {
+    const total = Math.ceil(filteredData.length / pageSize);
+    const container = document.getElementById('pagination');
+    if (total <= 1) { container.innerHTML = ''; return; }
+    let html = '';
+    for (let i=1; i<=total; i++) html += `<button class="${i===currentPage?'active':''}" onclick="goToPage(${i})">${i}</button>`;
+    container.innerHTML = html;
+  }
+
+  function goToPage(p) { currentPage = p; updateTable(); }
+  function changePageSize() { pageSize = parseInt(document.getElementById('pageSize').value); currentPage = 1; updateTable(); }
+
+  // ============================================================
+  // CHARTS (Colorful)
+  // ============================================================
+  function updateCharts() {
+    const vibrantColors = ['#58a6ff', '#3fb950', '#d29922', '#f85149', '#bc8cff', '#79c0ff', '#ff7b72', '#7ee787'];
+    
+    // City chart
+    const cityCounts = {}; filteredData.forEach(r => cityCounts[r.city] = (cityCounts[r.city]||0)+1);
+    const cityLabels = Object.keys(cityCounts), cityValues = Object.values(cityCounts);
+    if (cityChart) cityChart.destroy();
+    cityChart = new Chart(document.getElementById('cityChart'), {
+      type: 'bar',
+      data: { labels: cityLabels, datasets: [{ label: 'Registrations', data: cityValues, backgroundColor: vibrantColors.slice(0, cityLabels.length), borderColor: '#0d1117', borderWidth: 2 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#484f58' } }, x: { ticks: { color: '#484f58' } } } }
+    });
+
+    // Payment chart
+    const payCounts = {}; filteredData.forEach(r => payCounts[r.payment] = (payCounts[r.payment]||0)+1);
+    if (paymentChart) paymentChart.destroy();
+    paymentChart = new Chart(document.getElementById('paymentChart'), {
+      type: 'doughnut',
+      data: { labels: Object.keys(payCounts), datasets: [{ data: Object.values(payCounts), backgroundColor: ['#3fb950', '#d29922'], borderColor: '#161b22', borderWidth: 3 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8b949e' } } } }
+    });
+
+    // Trend chart
+    const monthCounts = {}; filteredData.forEach(r => { const m = getMonth(r.timestamp); monthCounts[m] = (monthCounts[m]||0)+1; });
+    const months = Object.keys(monthCounts).sort(), monthValues = months.map(m => monthCounts[m]);
+    if (trendChart) trendChart.destroy();
+    trendChart = new Chart(document.getElementById('trendChart'), {
+      type: 'line',
+      data: { labels: months, datasets: [{ label: 'Registrations', data: monthValues, borderColor: '#58a6ff', backgroundColor: 'rgba(88, 166, 255, 0.05)', fill: true, tension: 0.4, pointBackgroundColor: '#58a6ff', pointBorderColor: '#161b22', pointBorderWidth: 2 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#484f58' } }, x: { ticks: { color: '#484f58' } } } }
+    });
+
+    // Fee chart
+    const feeCounts = {}; filteredData.forEach(r => feeCounts[`PKR ${r.fee}`] = (feeCounts[`PKR ${r.fee}`]||0)+1);
+    if (feeChart) feeChart.destroy();
+    feeChart = new Chart(document.getElementById('feeChart'), {
+      type: 'pie',
+      data: { labels: Object.keys(feeCounts), datasets: [{ data: Object.values(feeCounts), backgroundColor: ['#58a6ff', '#f85149'], borderColor: '#161b22', borderWidth: 3 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8b949e' } } } }
+    });
+  }
+
+  // ============================================================
+  // EXPORT CSV
+  // ============================================================
+  function exportCSV() {
+    if (!filteredData.length) return alert('No data to export');
+    const headers = ['Date','Name','WhatsApp','City','Fee','Payment','Church'];
+    let csv = headers.join(',') + '\n';
+    filteredData.forEach(r => {
+      csv += [formatDate(r.timestamp), r.name, r.whatsapp, r.city, r.fee, r.payment, r.church].join(',') + '\n';
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'discipleship_data.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  // ============================================================
+  // REFRESH
+  // ============================================================
+  function refreshData() {
+    const btn = document.querySelector('.header-actions button:last-child');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing';
+    btn.disabled = true;
+
+    // REPLACE WITH YOUR APPS SCRIPT URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjyY1SC_gTGZAFmEVlLnqrGpZlBFj8Bz8vIl7nJBYWRFC7nSvOYVoZdvh3-61hiJOE/exec';
+
+    fetch(SCRIPT_URL)
+      .then(res => res.json())
+      .then(result => {
+        if (result.status === 'success' && result.data) {
+          allData = result.data.map((r,i) => ({ ...r, id: i+1, fee: parseInt(r.fee) || 500 }));
+          applyFilters();
+        } else {
+          throw new Error(result.message || 'Failed');
+        }
+      })
+      .catch(() => {
+        allData = [...SAMPLE_DATA];
+        applyFilters();
+      })
+      .finally(() => {
+        btn.innerHTML = orig;
+        btn.disabled = false;
+      });
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    ['dateFrom','dateTo','cityFilter','paymentFilter','feeFilter'].forEach(id => {
+      document.getElementById(id).addEventListener('change', applyFilters);
+    });
+    allData = [...SAMPLE_DATA];
+    applyFilters();
+  });
+</script>
+</body>
+</html>
