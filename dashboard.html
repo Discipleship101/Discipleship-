@@ -627,8 +627,18 @@
   // ============================================================
   // HELPERS
   // ============================================================
-  function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); }
-  function getMonth(d) { return new Date(d).toLocaleDateString('en-US', { month:'short', year:'numeric' }); }
+  function formatDate(d) {
+    if (!d) return '—';
+    const date = new Date(d);
+    if (isNaN(date.getTime())) return '—';
+    return date.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  }
+  function getMonth(d) {
+    if (!d) return '—';
+    const date = new Date(d);
+    if (isNaN(date.getTime())) return '—';
+    return date.toLocaleDateString('en-US', { month:'short', year:'numeric' });
+  }
 
   // ============================================================
   // FILTERS
@@ -670,17 +680,22 @@
   function updateStats() {
     const total = filteredData.length;
     const monthAgo = new Date(); monthAgo.setDate(monthAgo.getDate()-30);
-    const monthly = filteredData.filter(r => new Date(r.timestamp) >= monthAgo).length;
-    const cities = new Set(filteredData.map(r => r.city)).size;
-    const churches = new Set(filteredData.map(r => r.church)).size;
-    const avg = filteredData.length ? Math.round(filteredData.reduce((s,r) => s + r.fee, 0) / filteredData.length) : 0;
+    const monthly = filteredData.filter(r => {
+      if (!r.timestamp) return false;
+      const d = new Date(r.timestamp);
+      return !isNaN(d.getTime()) && d >= monthAgo;
+    }).length;
+    const cities = new Set(filteredData.map(r => r.city).filter(Boolean)).size;
+    const churches = new Set(filteredData.map(r => r.church).filter(Boolean)).size;
+    const avg = filteredData.length ? Math.round(filteredData.reduce((s,r) => s + (parseInt(r.fee) || 0), 0) / filteredData.length) : 0;
     
     const twoMonthsAgo = new Date(); twoMonthsAgo.setDate(twoMonthsAgo.getDate()-60);
     const previousMonth = filteredData.filter(r => {
+      if (!r.timestamp) return false;
       const d = new Date(r.timestamp);
-      return d >= twoMonthsAgo && d < monthAgo;
+      return !isNaN(d.getTime()) && d >= twoMonthsAgo && d < monthAgo;
     }).length;
-    const growth = previousMonth === 0 ? 100 : Math.round(((monthly - previousMonth) / previousMonth) * 100);
+    const growth = previousMonth === 0 ? (monthly > 0 ? 100 : 0) : Math.round(((monthly - previousMonth) / previousMonth) * 100);
     
     document.getElementById('totalReg').textContent = total;
     document.getElementById('monthlyReg').textContent = monthly;
@@ -692,7 +707,7 @@
   }
 
   function updateCityFilter() {
-    const cities = [...new Set(allData.map(r => r.city))];
+    const cities = [...new Set(allData.map(r => r.city).filter(Boolean))];
     const sel = document.getElementById('cityFilter');
     const cur = sel.value;
     sel.innerHTML = '<option value="">All</option>';
@@ -718,6 +733,7 @@
     pageData.forEach((r, i) => {
       const num = start + i + 1;
       
+      // FIX 1: Use monthly fee (500 or 1000) instead of registration fee
       let feeValue = parseInt(r.fee) || 500;
       const feeBadge = feeValue === 500 ? 'badge-500' : 'badge-1000';
       
@@ -752,9 +768,12 @@
       const whatsappValue = r.whatsapp || r.WhatsAppNumber || r.whatsappNumber || 'N/A';
       const cityValue = r.city || r.City || 'N/A';
       
+      // FIX 3: Format date properly - handle invalid dates
+      const dateDisplay = formatDate(r.timestamp);
+      
       html += `<tr>
         <td>${num}</td>
-        <td>${formatDate(r.timestamp)}</td>
+        <td>${dateDisplay}</td>
         <td><strong>${nameValue}</strong></td>
         <td>${whatsappValue}</td>
         <td>${cityValue}</td>
@@ -766,9 +785,6 @@
     
     tbody.innerHTML = html;
 
-    // Open a photo in the full-size viewer when its thumbnail is clicked.
-    // If the thumbnail cannot load, keep the camera icon clickable so the
-    // viewer can still try the original Drive URL.
     tbody.querySelectorAll('.photo-preview').forEach(function(image) {
       image.addEventListener('click', function() {
         openPhotoLightbox(image.dataset.photoUrl);
@@ -849,43 +865,144 @@
   function changePageSize() { pageSize = parseInt(document.getElementById('pageSize').value); currentPage = 1; updateTable(); }
 
   // ============================================================
-  // CHARTS
+  // CHARTS - FIXED to respond to filtered data
   // ============================================================
   function updateCharts() {
     const vibrantColors = ['#58a6ff', '#3fb950', '#d29922', '#f85149', '#bc8cff', '#79c0ff', '#ff7b72', '#7ee787'];
     
-    const cityCounts = {}; filteredData.forEach(r => cityCounts[r.city] = (cityCounts[r.city]||0)+1);
-    const cityLabels = Object.keys(cityCounts), cityValues = Object.values(cityCounts);
+    // FIX 2: City chart - use filtered data
+    const cityCounts = {};
+    filteredData.forEach(r => {
+      const city = r.city || 'Unknown';
+      cityCounts[city] = (cityCounts[city] || 0) + 1;
+    });
+    const cityLabels = Object.keys(cityCounts);
+    const cityValues = Object.values(cityCounts);
+    
     if (cityChart) cityChart.destroy();
     cityChart = new Chart(document.getElementById('cityChart'), {
       type: 'bar',
-      data: { labels: cityLabels, datasets: [{ label: 'Registrations', data: cityValues, backgroundColor: vibrantColors.slice(0, cityLabels.length), borderColor: '#0d1117', borderWidth: 2 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#484f58' } }, x: { ticks: { color: '#484f58' } } } }
+      data: { 
+        labels: cityLabels.length ? cityLabels : ['No Data'], 
+        datasets: [{ 
+          label: 'Registrations', 
+          data: cityLabels.length ? cityValues : [0], 
+          backgroundColor: cityLabels.length ? vibrantColors.slice(0, cityLabels.length) : ['#484f58'], 
+          borderColor: '#0d1117', 
+          borderWidth: 2 
+        }] 
+      },
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { legend: { display: false } }, 
+        scales: { 
+          y: { ticks: { color: '#484f58', stepSize: 1 } }, 
+          x: { ticks: { color: '#484f58' } } 
+        } 
+      }
     });
 
-    const payCounts = {}; filteredData.forEach(r => payCounts[r.payment] = (payCounts[r.payment]||0)+1);
+    // Payment chart - use filtered data
+    const payCounts = {};
+    filteredData.forEach(r => {
+      const payment = r.payment || 'Unknown';
+      payCounts[payment] = (payCounts[payment] || 0) + 1;
+    });
+    const payLabels = Object.keys(payCounts);
+    const payValues = Object.values(payCounts);
+    
     if (paymentChart) paymentChart.destroy();
     paymentChart = new Chart(document.getElementById('paymentChart'), {
       type: 'doughnut',
-      data: { labels: Object.keys(payCounts), datasets: [{ data: Object.values(payCounts), backgroundColor: ['#3fb950', '#d29922'], borderColor: '#161b22', borderWidth: 3 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8b949e' } } } }
+      data: { 
+        labels: payLabels.length ? payLabels : ['No Data'], 
+        datasets: [{ 
+          data: payLabels.length ? payValues : [1], 
+          backgroundColor: payLabels.length ? ['#3fb950', '#d29922', '#58a6ff', '#f85149'] : ['#484f58'], 
+          borderColor: '#161b22', 
+          borderWidth: 3 
+        }] 
+      },
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { position: 'bottom', labels: { color: '#8b949e' } } 
+        } 
+      }
     });
 
-    const monthCounts = {}; filteredData.forEach(r => { const m = getMonth(r.timestamp); monthCounts[m] = (monthCounts[m]||0)+1; });
-    const months = Object.keys(monthCounts).sort(), monthValues = months.map(m => monthCounts[m]);
+    // Trend chart - use filtered data with valid dates
+    const monthCounts = {};
+    filteredData.forEach(r => {
+      if (r.timestamp) {
+        const m = getMonth(r.timestamp);
+        if (m !== '—') {
+          monthCounts[m] = (monthCounts[m] || 0) + 1;
+        }
+      }
+    });
+    const months = Object.keys(monthCounts).sort();
+    const monthValues = months.map(m => monthCounts[m]);
+    
     if (trendChart) trendChart.destroy();
     trendChart = new Chart(document.getElementById('trendChart'), {
       type: 'line',
-      data: { labels: months, datasets: [{ label: 'Registrations', data: monthValues, borderColor: '#58a6ff', backgroundColor: 'rgba(88, 166, 255, 0.05)', fill: true, tension: 0.4, pointBackgroundColor: '#58a6ff', pointBorderColor: '#161b22', pointBorderWidth: 2 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#484f58' } }, x: { ticks: { color: '#484f58' } } } }
+      data: { 
+        labels: months.length ? months : ['No Data'], 
+        datasets: [{ 
+          label: 'Registrations', 
+          data: months.length ? monthValues : [0], 
+          borderColor: '#58a6ff', 
+          backgroundColor: 'rgba(88, 166, 255, 0.05)', 
+          fill: true, 
+          tension: 0.4, 
+          pointBackgroundColor: '#58a6ff', 
+          pointBorderColor: '#161b22', 
+          pointBorderWidth: 2 
+        }] 
+      },
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { legend: { display: false } }, 
+        scales: { 
+          y: { ticks: { color: '#484f58', stepSize: 1 } }, 
+          x: { ticks: { color: '#484f58' } } 
+        } 
+      }
     });
 
-    const feeCounts = {}; filteredData.forEach(r => feeCounts[`PKR ${r.fee}`] = (feeCounts[`PKR ${r.fee}`]||0)+1);
+    // Fee chart - use filtered data
+    const feeCounts = {};
+    filteredData.forEach(r => {
+      const fee = parseInt(r.fee) || 500;
+      const key = `PKR ${fee}`;
+      feeCounts[key] = (feeCounts[key] || 0) + 1;
+    });
+    const feeLabels = Object.keys(feeCounts);
+    const feeValues = Object.values(feeCounts);
+    
     if (feeChart) feeChart.destroy();
     feeChart = new Chart(document.getElementById('feeChart'), {
       type: 'pie',
-      data: { labels: Object.keys(feeCounts), datasets: [{ data: Object.values(feeCounts), backgroundColor: ['#58a6ff', '#f85149'], borderColor: '#161b22', borderWidth: 3 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8b949e' } } } }
+      data: { 
+        labels: feeLabels.length ? feeLabels : ['No Data'], 
+        datasets: [{ 
+          data: feeLabels.length ? feeValues : [1], 
+          backgroundColor: feeLabels.length ? ['#58a6ff', '#f85149', '#d29922'] : ['#484f58'], 
+          borderColor: '#161b22', 
+          borderWidth: 3 
+        }] 
+      },
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { position: 'bottom', labels: { color: '#8b949e' } } 
+        } 
+      }
     });
   }
 
@@ -966,10 +1083,8 @@
       applyFilters();
     }, 15000);
 
-    // Store the timeout ID on the script element so we can clear it
     script._timeout = timeout;
     
-    // Override the original callback to clear the timeout
     const originalCallback = window[callbackName];
     window[callbackName] = function(result) {
       clearTimeout(timeout);
@@ -999,6 +1114,7 @@
         return {
           ...r,
           id: i + 1,
+          // FIX 1: Ensure fee is the monthly fee (500 or 1000)
           fee: parseInt(r.fee) || parseInt(r.MonthlyFee) || 500,
           church: r.church || r.ChurchName || 'N/A',
           name: r.name || r.FullName || r.fullName || 'Unknown',
