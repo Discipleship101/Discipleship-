@@ -30,7 +30,6 @@
       margin: 0 auto;
     }
 
-    /* ---- Header ---- */
     .dash-header {
       background: linear-gradient(135deg, #161b22, #1c2333);
       padding: 1.2rem 2rem;
@@ -104,7 +103,6 @@
       box-shadow: 0 8px 25px rgba(88, 166, 255, 0.25);
     }
 
-    /* ---- Stats Grid ---- */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -174,7 +172,6 @@
     .stat-card.red .value { color: #f85149; }
     .stat-card.cyan .value { color: #79c0ff; }
 
-    /* ---- Filters ---- */
     .filters-bar {
       background: #161b22;
       padding: 1rem 1.5rem;
@@ -244,7 +241,6 @@
       border-color: #f85149;
     }
 
-    /* ---- Charts ---- */
     .charts-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -285,7 +281,6 @@
       height: 200px;
     }
 
-    /* ---- Table ---- */
     .table-section {
       background: #161b22;
       border-radius: 12px;
@@ -623,28 +618,48 @@
     let html = '';
     pageData.forEach((r, i) => {
       const num = start + i + 1;
-      const feeBadge = r.fee === 500 ? 'badge-500' : 'badge-1000';
-      const payBadge = r.payment === 'Easypaisa' ? 'badge-easypaisa' : 'badge-jazzcash';
       
-      // --- IMAGE HANDLING ---
+      let feeValue = parseInt(r.fee) || 500;
+      const feeBadge = feeValue === 500 ? 'badge-500' : 'badge-1000';
+      
+      const paymentValue = r.payment || r.PaymentMethod || 'N/A';
+      let payBadge = '';
+      let payDisplay = paymentValue;
+      
+      if (paymentValue.toLowerCase().includes('easypaisa')) {
+        payBadge = 'badge-easypaisa';
+        payDisplay = 'Easypaisa';
+      } else if (paymentValue.toLowerCase().includes('jazzcash') || paymentValue.toLowerCase().includes('jazz')) {
+        payBadge = 'badge-jazzcash';
+        payDisplay = 'JazzCash';
+      } else {
+        payBadge = '';
+        payDisplay = paymentValue;
+      }
+      
       let imgHtml = '<span class="no-image">—</span>';
+      const photoUrl = r.photo || null;
       
-      if (r.photo && r.photo.trim() !== '') {
-        imgHtml = `<img src="${r.photo}" class="img-thumb" loading="lazy" 
-                     onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'no-image\\'>❌</span>'" 
+      if (photoUrl && photoUrl.trim() !== '' && photoUrl !== 'N/A') {
+        imgHtml = `<img src="${photoUrl}" class="img-thumb" loading="lazy" 
+                     onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'no-image\\'>📷</span>'" 
                      alt="Photo" 
-                     onclick="window.open('${r.photo}', '_blank')" 
+                     onclick="window.open('${photoUrl}', '_blank')" 
                      title="Click to view full image" />`;
       }
+      
+      const nameValue = r.name || r.FullName || r.fullName || 'Unknown';
+      const whatsappValue = r.whatsapp || r.WhatsAppNumber || r.whatsappNumber || 'N/A';
+      const cityValue = r.city || r.City || 'N/A';
       
       html += `<tr>
         <td>${num}</td>
         <td>${formatDate(r.timestamp)}</td>
-        <td><strong>${r.name || 'Unknown'}</strong></td>
-        <td>${r.whatsapp || 'N/A'}</td>
-        <td>${r.city || 'N/A'}</td>
-        <td><span class="badge ${feeBadge}">PKR ${r.fee || 'N/A'}</span></td>
-        <td><span class="badge ${payBadge}">${r.payment || 'N/A'}</span></td>
+        <td><strong>${nameValue}</strong></td>
+        <td>${whatsappValue}</td>
+        <td>${cityValue}</td>
+        <td><span class="badge ${feeBadge}">PKR ${feeValue}</span></td>
+        <td>${payBadge ? `<span class="badge ${payBadge}">${payDisplay}</span>` : payDisplay}</td>
         <td>${imgHtml}</td>
       </tr>`;
     });
@@ -671,7 +686,6 @@
   function updateCharts() {
     const vibrantColors = ['#58a6ff', '#3fb950', '#d29922', '#f85149', '#bc8cff', '#79c0ff', '#ff7b72', '#7ee787'];
     
-    // City chart
     const cityCounts = {}; filteredData.forEach(r => cityCounts[r.city] = (cityCounts[r.city]||0)+1);
     const cityLabels = Object.keys(cityCounts), cityValues = Object.values(cityCounts);
     if (cityChart) cityChart.destroy();
@@ -681,7 +695,6 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#484f58' } }, x: { ticks: { color: '#484f58' } } } }
     });
 
-    // Payment chart
     const payCounts = {}; filteredData.forEach(r => payCounts[r.payment] = (payCounts[r.payment]||0)+1);
     if (paymentChart) paymentChart.destroy();
     paymentChart = new Chart(document.getElementById('paymentChart'), {
@@ -690,7 +703,6 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8b949e' } } } }
     });
 
-    // Trend chart
     const monthCounts = {}; filteredData.forEach(r => { const m = getMonth(r.timestamp); monthCounts[m] = (monthCounts[m]||0)+1; });
     const months = Object.keys(monthCounts).sort(), monthValues = months.map(m => monthCounts[m]);
     if (trendChart) trendChart.destroy();
@@ -700,7 +712,6 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#484f58' } }, x: { ticks: { color: '#484f58' } } } }
     });
 
-    // Fee chart
     const feeCounts = {}; filteredData.forEach(r => feeCounts[`PKR ${r.fee}`] = (feeCounts[`PKR ${r.fee}`]||0)+1);
     if (feeChart) feeChart.destroy();
     feeChart = new Chart(document.getElementById('feeChart'), {
@@ -729,7 +740,7 @@
   }
 
   // ============================================================
-  // REFRESH DATA - WITH IMAGE HANDLING
+  // REFRESH DATA - USING JSONP TO AVOID CORS
   // ============================================================
   function refreshData() {
     const btn = document.querySelector('.header-actions button:last-child');
@@ -737,59 +748,107 @@
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing';
     btn.disabled = true;
 
-    // ⚠️ REPLACE THIS WITH YOUR DEPLOYED APPS SCRIPT URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-BM1PFd6B_LanN9f1PnYYY-UWN57GaNj6HAOgBeaIcFnxuCHjAjkOjyQ0MVqzE2R_Yg/exec';
+    // ⚠️ REPLACE WITH YOUR DEPLOYED APPS SCRIPT URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzR3VJMQqqpWU77trodvFyJKyFiAQUWco-c7psGVEUVqUZmHDwfoMDUAFFv2fMot8DBCQ/exec';
 
-    fetch(SCRIPT_URL)
-      .then(res => {
-        if (!res.ok) throw new Error('Network response was not ok');
-        return res.json();
-      })
-      .then(result => {
-        console.log('📊 API Response:', result);
-        
-        if (result.status === 'success' && result.data) {
-          allData = result.data.map((r, i) => {
-            // Log the first entry to see all fields
-            if (i === 0) {
-              console.log('📸 First entry fields:', Object.keys(r));
-              console.log('📸 First entry photo:', r.photo);
-            }
-            
-            return {
-              ...r,
-              id: i + 1,
-              fee: parseInt(r.fee) || 500,
-              church: r.church || r.ChurchName || 'N/A',
-              name: r.name || r.FullName || 'Unknown',
-              whatsapp: r.whatsapp || r.WhatsAppNumber || 'N/A',
-              city: r.city || r.City || 'N/A',
-              payment: r.payment || r.PaymentMethod || 'N/A',
-              // IMPORTANT: Capture the photo URL from the 'photo' field
-              photo: r.photo || null
-            };
-          });
-          
-          // Log how many entries have photos
-          const withPhotos = allData.filter(r => r.photo && r.photo.trim() !== '').length;
-          console.log(`📸 ${withPhotos} out of ${allData.length} entries have photos`);
-          
-          applyFilters();
-          console.log(`✅ Loaded ${result.count} records from Google Sheet`);
-        } else {
-          throw new Error(result.message || 'Failed to load data');
-        }
-      })
-      .catch(error => {
-        console.error('❌ Error loading data:', error);
+    // Create a unique callback name
+    const callbackName = 'jsonpCallback_' + Date.now();
+    
+    // Define the callback function globally
+    window[callbackName] = function(result) {
+      // Clean up
+      delete window[callbackName];
+      
+      try {
+        console.log('📊 JSONP Response:', result);
+        processData(result);
+      } catch (error) {
+        console.error('❌ Error processing data:', error);
         alert('Failed to load data from Google Sheet. Using sample data.');
         allData = [...SAMPLE_DATA];
         applyFilters();
-      })
-      .finally(() => {
+      } finally {
         btn.innerHTML = orig;
         btn.disabled = false;
+      }
+    };
+
+    // Create the script tag for JSONP
+    const script = document.createElement('script');
+    script.src = SCRIPT_URL + '?callback=' + encodeURIComponent(callbackName);
+    script.onerror = function() {
+      // Clean up
+      delete window[callbackName];
+      btn.innerHTML = orig;
+      btn.disabled = false;
+      alert('Failed to load data from Google Sheet. Using sample data.');
+      allData = [...SAMPLE_DATA];
+      applyFilters();
+    };
+    
+    // Set a timeout
+    const timeout = setTimeout(function() {
+      // Clean up
+      delete window[callbackName];
+      document.body.removeChild(script);
+      btn.innerHTML = orig;
+      btn.disabled = false;
+      alert('Request timed out. Using sample data.');
+      allData = [...SAMPLE_DATA];
+      applyFilters();
+    }, 15000);
+
+    // Store the timeout ID on the script element so we can clear it
+    script._timeout = timeout;
+    
+    // Override the original callback to clear the timeout
+    const originalCallback = window[callbackName];
+    window[callbackName] = function(result) {
+      clearTimeout(timeout);
+      document.body.removeChild(script);
+      originalCallback(result);
+    };
+
+    document.body.appendChild(script);
+  }
+
+  // ============================================================
+  // PROCESS DATA - Shared function
+  // ============================================================
+  function processData(result) {
+    console.log('📊 Processing data:', result);
+    
+    if (result.status === 'success' && result.data) {
+      console.log(`📸 Photos found: ${result.photosFound || 0}`);
+      console.log(`📸 Photos matched: ${result.photosMatched || 0}`);
+      
+      allData = result.data.map((r, i) => {
+        if (i === 0) {
+          console.log('📸 First record:', r);
+          console.log('📸 Photo URL:', r.photo);
+        }
+        
+        return {
+          ...r,
+          id: i + 1,
+          fee: parseInt(r.fee) || parseInt(r.MonthlyFee) || 500,
+          church: r.church || r.ChurchName || 'N/A',
+          name: r.name || r.FullName || r.fullName || 'Unknown',
+          whatsapp: r.whatsapp || r.WhatsAppNumber || r.whatsappNumber || 'N/A',
+          city: r.city || r.City || 'N/A',
+          payment: r.payment || r.PaymentMethod || r['Payment Method'] || 'N/A',
+          photo: r.photo || null
+        };
       });
+      
+      const withPhotos = allData.filter(r => r.photo && r.photo.trim() !== '').length;
+      console.log(`📸 ${withPhotos} out of ${allData.length} entries have photos`);
+      
+      applyFilters();
+      console.log(`✅ Loaded ${result.count} records from merged sheets`);
+    } else {
+      throw new Error(result.message || 'Failed to load data');
+    }
   }
 
   // ============================================================
